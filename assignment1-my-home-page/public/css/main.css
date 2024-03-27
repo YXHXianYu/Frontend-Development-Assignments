@@ -24,6 +24,7 @@ a {
     position: relative;
     text-decoration: none;
     color: inherit;
+    font-style: italic;
 }
 a::after {
     content: '';
@@ -79,6 +80,7 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    background-position: center;
 }
 
 /* ----- Body Header ----- */
@@ -315,6 +317,9 @@ body {
 .content > .introduction {
     position: relative;
 
+    /* I found that `introduction` is useless. `Article` is a better way to introduce. */
+    display: none;
+
     margin: 10px 10px;
     padding: 10px 20px;
     border: 1px solid var(--grey);
@@ -364,8 +369,8 @@ body {
 /* Trigger & Animation !!! */
 
 .trigger {
-    width: 54px;
-    height: 54px;
+    width: 108px;
+    height: 108px;
 
     position: fixed;
     top: 0;
