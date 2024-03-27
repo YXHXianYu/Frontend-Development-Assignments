@@ -143,7 +143,19 @@ body {
 .header-first > .title {
     position: relative;
     font-size: 20px;
-    font-weight: 400;
+    font-weight: 600;
+}
+.header-first > .title::after {
+    content: ' ~ ~ o(*￣▽￣*)o';
+    animation: titleAnimation 2.5s infinite;
+}
+@keyframes titleAnimation {
+    0%, 50% {
+        content: ' ~ ~ o(*￣▽￣*)o';
+    }
+    51%, 100% {
+        content: 'o(*￣▽￣*)o ~ ~';
+    }
 }
 
 .header-first > .right {
@@ -198,7 +210,7 @@ body {
     position: sticky;
     top: 0;
     background-color: white;
-    height: 1000px;
+    height: 1030px;
     width: 250px;
 
     border: 3px solid var(--grey);
@@ -246,7 +258,7 @@ body {
     padding: 15px 0;
 }
 
-.aboutme > .location {
+.aboutme > .links > * {
     position: relative;
     font-size: 15px;
     font-weight: 400;
@@ -254,24 +266,20 @@ body {
     display: flex;
     padding: 3px 0;
 }
-.aboutme > .location > img {
+.aboutme > .links p {
+    position: relative;
+    padding-left: 2px;;
+}
+.aboutme > .links img {
     position: relative;
     width: 20px;
     padding-right: 3px;
 }
-.aboutme > .link {
-    position: relative;
-    font-size: 15px;
-    font-weight: 400;
-
-    display: flex;
-    padding: 3px 0;
-}
-.aboutme > .link > img {
-    position: relative;
-    width: 20px;
-    padding-right: 3px;
-}
+.aboutme .github > img {
+    width: 18px;
+    padding-right: 4px;
+    padding-left: 1px;
+} 
 
 /* ----- Main Sidebar Memes ----- */
 
@@ -340,10 +348,6 @@ body {
     text-align: center;
 }
 
-
-
-
-
 /* Media */
 
 @media (max-width: 768px) {
@@ -354,5 +358,212 @@ body {
 
     .aside {
         flex-basis: auto;
+    }
+}
+
+/* Trigger & Animation !!! */
+
+.trigger {
+    width: 54px;
+    height: 54px;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+
+    background-image: url('../pics/rabi1.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: background-image 1s;
+}
+.trigger:hover {
+    background-image: url('../pics/rabi2.png');
+}
+.trigger:hover ~ .header {
+    /* animation: headerAnimation 10s infinite; */
+    transform: rotateY(-30deg) translateZ(-500px) translateX(130px);
+}
+.trigger:hover ~ .main > .sidebar {
+    /* animation: sidebarAnimation 10s infinite; */
+    transform: rotateX(1deg) rotateY(10deg) translateZ(-100px) translateX(-200px);
+}
+.trigger:hover ~ .main > .content {
+    /* animation: contentAnimation 10s infinite; */
+    transform: rotateX(1deg) rotateY(-10deg) translateZ(-100px) translateX(200px);
+}
+.trigger:hover ~ .header > .header-first > .title::after {
+    content: "o(≧▽≦)o 点到什么奇怪的开关啦！ w(ﾟДﾟ)w";
+    animation: none;
+}
+
+body, .main {
+    transform-style: preserve-3d;
+    perspective: 500px;
+    perspective-origin: 50% 0%;
+}
+.header {
+    transform: rotateY(0) translateZ(0);
+    transform-style: preserve-3d;
+    transition: transform 5s;
+}
+.sidebar {
+    transform: rotateY(0) translateZ(0);
+    transform-style: preserve-3d;
+    transition: transform 5s;
+}
+.content {
+    transform: rotateY(0) translateZ(0);
+    transform-style: preserve-3d;
+    transition: transform 5s;
+}
+
+@keyframes headerAnimation {
+    0% {
+        transform: rotateY(0) translateZ(0);
+    }
+    50% {
+        transform: rotateY(-30deg) translateZ(-500px) translateX(130px);
+    }
+}
+@keyframes sidebarAnimation {
+    0% {
+        transform: rotateY(0) translateZ(0);
+    }
+    50% {
+        transform: rotateX(1deg) rotateY(10deg) translateZ(-100px) translateX(-200px);
+    }
+}
+@keyframes contentAnimation {
+    0% {
+        transform: rotateY(0) translateZ(0);
+    }
+    50% {
+        transform: rotateX(1deg) rotateY(-10deg) translateZ(-100px) translateX(200px);
+    }
+}
+
+/* 3D Cube */
+
+/* Notes: The following scripts are copied from example codes in the lessons */
+/* My improvement in this module is Texture Applyment & Position Animation */
+.cube > .side {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width: 100px;
+    height: 100px;
+    opacity: 1.0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: aliceblue;
+    font-size: 30px;
+}
+.cube > .side:nth-child(1) {
+    background: rgb(229, 86, 101);
+    transform: translateZ(50px);
+}
+.cube > .side:nth-child(2) {
+    background: rgb(227, 227, 149);
+    transform: translateX(-50px) rotateY(-90deg);
+    background-image: url('../pics/grass-side.png');
+    background-size: cover;
+}
+.cube > .side:nth-child(3) {
+    background: rgb(122, 165, 215);
+    transform: translateX(50px) rotateY(90deg);
+    background-image: url('../pics/grass-side.png');
+    background-size: cover;
+}
+.cube > .side:nth-child(4) {
+    background: rgb(114, 188, 171);
+    transform: translateZ(-50px) rotateY(180deg);
+    background-image: url('../pics/grass-side.png');
+    background-size: cover;
+}
+.cube > .side:nth-child(5) {
+    background: rgb(216, 171, 209);
+    transform: translateY(-50px) rotateX(90deg);
+    background-image: url('../pics/grass-top.png');
+    background-size: cover;
+}
+.cube > .side:nth-child(6) {
+    background: rgb(231, 214, 190);
+    transform:  translateY(50px) rotateX(-90deg);
+    background-image: url('../pics/grass-bottom.png');
+    background-size: cover;
+}
+
+.cube > .side:nth-child(1)::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: url('../pics/grass-side.png');
+    background-size: cover;
+    transform: rotate(-90deg);
+}
+.cube > .side:nth-child(2)::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: url('../pics/grass-side.png');
+    background-size: cover;
+    transform: rotate(-90deg);
+}
+.cube > .side:nth-child(3)::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: url('../pics/grass-side.png');
+    background-size: cover;
+    transform: rotate(-90deg);
+}
+.cube > .side:nth-child(4)::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: url('../pics/grass-side.png');
+    background-size: cover;
+    transform: rotate(-90deg);
+}
+
+/* Brilliant Me! An experienced programmer should use a wrapper instead of calculating complex transform matrices */
+.cube-wrapper {
+    position: fixed;
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 40%;
+    transform: translate3d(-1000px, -300px, -1000px);
+    transform-style: preserve-3d;
+    transition: transform 3s ease-in-out 0.3s;
+}
+.trigger:hover ~ .cube-wrapper {
+    transform: translate3d(0, -300px, 100px);
+}
+
+.cube {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 40%;
+    transform-style: preserve-3d;
+    animation: ani3 4s infinite linear;
+}
+@keyframes ani3 {
+    0% {
+        transform: rotateY(0deg) rotateX(0deg);
+    }
+    50% {
+        transform: rotateY(180deg) rotateX(180deg);
+    }
+    100% {
+        transform: rotateY(360deg) rotateX(360deg);
     }
 }
