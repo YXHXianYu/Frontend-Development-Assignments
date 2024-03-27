@@ -1,3 +1,358 @@
-.logo {
-    background-color: #0059ff;   
+/* Variables */
+
+:root {
+    --black: rgb(31, 35, 40);
+    --light-black: rgb(99, 108, 118);
+    --grey: rgb(208, 215, 222);
+    --light-white: rgb(246, 248, 250);
+    --link-color: var(--black);
+    --blockquote-color: #666;
+
+    --font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+
+}
+
+/* Global Settings */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* a */
+a {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: var(--link-color);
+    transform: translateX(-50%);
+    left: 50%;
+    bottom: -3px;
+
+    transition: all 0.2s ease-in-out 0s;
+}
+a:hover::after {
+    width: 100%;
+    transform: translateX(-50%);
+}
+
+
+/* blockquote */
+blockquote {
+    border-left: 4px solid #ddd;
+    color: var(--blockquote-color);
+}
+blockquote > p {
+    margin: 0 0 0 10px;
+}
+
+/* Code */
+code {
+    background-color: #eee;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-family: var(--font-family);
+    font-size: 100%;
+}
+
+/* ul */
+ul {
+    padding-left: 30px;
+}
+
+/* Body */
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+}
+body {
+    background-image: url('../pics/background-cut.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* ----- Body Header ----- */
+
+.header {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    background-color: rgb(255, 255, 255);
+    color: var(--black);
+
+    display: flex;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+
+    border-bottom: 3px solid var(--grey);
+}
+
+.header-first {
+    display: flex;
+
+    width: 100%;
+    height: 50px;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.header-second {
+    /* display: flex; */
+    display: none;
+
+    width: 100%;
+    height: 40px;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* ----- Header First ----- */
+
+.header-first > .menu {
+    position: relative;
+    height: 100%;
+}
+
+.header-first > .menu > img {
+    position: relative;
+    height: 40%;
+    padding: 15px;
+}
+
+.header-first > .title {
+    position: relative;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.header-first > .right {
+    position: relative;
+    height: 100%;
+    margin-left: auto;
+}
+
+.header-first > .right > .avatar {
+    position: relative;
+    height: 50%;
+    margin: 12px;
+
+    border-radius: 50%;
+    border: 1px solid var(--grey);
+}
+
+/* ----- Header Second ----- */
+
+.header-second > .navigation {
+    position: relative;
+    height: 100%;
+    
+    padding: 0 20px;
+
+    line-height: 30px;
+}
+
+.header-second > .navigation > a {
+    position: relative;
+    padding: 0 20px;
+}
+
+/* ----- Main ----- */
+
+.main {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 0 auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+}
+
+.main > * {
+    padding: 30px;
+}
+
+.main > .sidebar {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    height: 1000px;
+    width: 250px;
+
+    border: 3px solid var(--grey);
+    border-top: 0px;
+}
+
+.main > .content {
+    position: relative;
+    /* margin-left: 20px; */
+    background-color: white;
+
+    border: 3px solid var(--grey);
+    border-top: 0px;
+    border-left: 0px;
+}
+
+/* ----- Main Sidebar AboutMe ----- */
+
+.aboutme > .avatar {
+    position: relative;
+    width: 100%;
+    border-radius: 50%;
+    border: 1px solid var(--grey);
+}
+
+.aboutme > .name {
+    position: relative;
+    font-size: 25px;
+    font-weight: 500;
+    padding-top: 10px;
+}
+
+.aboutme > .nickname {
+    position: relative;
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--light-black);
+}
+
+.aboutme > .note {
+    position: relative;
+    font-size: 17px;
+    font-weight: 400;
+
+    padding: 15px 0;
+}
+
+.aboutme > .location {
+    position: relative;
+    font-size: 15px;
+    font-weight: 400;
+
+    display: flex;
+    padding: 3px 0;
+}
+.aboutme > .location > img {
+    position: relative;
+    width: 20px;
+    padding-right: 3px;
+}
+.aboutme > .link {
+    position: relative;
+    font-size: 15px;
+    font-weight: 400;
+
+    display: flex;
+    padding: 3px 0;
+}
+.aboutme > .link > img {
+    position: relative;
+    width: 20px;
+    padding-right: 3px;
+}
+
+/* ----- Main Sidebar Memes ----- */
+
+.sidebar > hr {
+    position: relative;
+    margin: 15px 0;
+    border-color: var(--light-white);
+}
+
+.memes {
+    display: block;
+}
+.memes > p {
+    position: relative;
+    font-size: 17px;
+    font-weight: 500;
+
+    padding-bottom: 15px;
+}
+.memes > img {
+    position: relative;
+    width: 32px;
+    height: 32px;
+}
+
+/* ----- Main - Content ----- */
+
+.content {
+    position: relative;
+    width: 75%;
+}
+
+.content > .introduction {
+    position: relative;
+
+    margin: 10px 10px;
+    padding: 10px 20px;
+    border: 1px solid var(--grey);
+    border-radius: 8px;
+
+    min-height: 100px;
+}
+
+.content > .articles {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+}
+.content > .articles > .article {
+    position: relative;
+    padding: 20px 30px;
+
+    margin: 10px 10px;
+    border: 1px solid var(--grey);
+    border-radius: 8px;
+
+    display: block;
+}
+
+.article > * {
+    margin: 15px 0;
+    line-height: 1.7;
+}
+.article > h2 {
+    text-align: center;
+}
+
+
+
+
+
+/* Media */
+
+@media (max-width: 768px) {
+    main {
+        flex-flow: column;
+        align-items: stretch;
+    }
+
+    .aside {
+        flex-basis: auto;
+    }
 }

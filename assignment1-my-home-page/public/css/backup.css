@@ -1,0 +1,102 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  align-items: stretch;
+  flex-flow: column;
+  padding-top: 40px;
+}
+
+nav {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 40px;
+  background-color: rgb(33,37,41);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+}
+
+nav a, nav a:visited {
+  color: #ccc;
+  text-decoration: none;
+}
+nav a:hover {
+  color: white;
+}
+nav a:active {
+  color: #888;
+}
+
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 16px;
+  gap: 16px;
+}
+
+.tooltip {
+  display: block;
+  position: fixed;
+  right: 16px;
+  top: 64px;
+  height: 100px;
+  width: 64px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #eee;
+}
+
+aside {
+  flex: 0 0 200px;
+}
+aside ul {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  list-style-type: none;
+  padding-inline-start: 0;
+}
+
+aside ul li {
+  display: block;
+  padding: 8px 16px;
+  border-bottom: 1px solid #ccc;
+}
+aside ul li:nth-last-child() {
+  border-bottom: none;
+}
+aside ul li::before {
+  content: "-";
+}
+aside ul li::after {
+  content: "-";
+}
+
+.content {
+  flex: 1 1 auto;
+}
+
+.img {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  main {
+    flex-flow: column;
+    align-items: stretch;
+  }
+
+  .aside {
+    flex-basis: auto;
+  }
+}
