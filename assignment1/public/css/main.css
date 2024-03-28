@@ -69,13 +69,15 @@ ul {
 
 /* Body */
 
-html, body {
+html, body, .camera {
     height: 100%;
     margin: 0;
     padding: 0;
     font-family: var(--font-family);
 }
 body {
+    min-width: 500px;
+
     background-image: url('../pics/background-cut.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -127,6 +129,27 @@ body {
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
+}
+
+/* Footer */
+.footer {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    background-color: rgb(255, 255, 255);
+    color: var(--black);
+}
+.footer > p {
+    position: relative;
+    text-align: center;
+}
+.footer > p:nth-child(1) {
+    padding-top: 5px;
+}
+.footer > p:nth-child(2) {
+    padding-bottom: 5px;
 }
 
 /* ----- Header First ----- */
@@ -208,7 +231,7 @@ body {
     padding: 30px;
 }
 
-.main > .sidebar {
+.sidebar {
     position: sticky;
     top: 0;
     background-color: white;
@@ -219,7 +242,7 @@ body {
     border-top: 0px;
 }
 
-.main > .content {
+.content {
     position: relative;
     /* margin-left: 20px; */
     background-color: white;
@@ -356,13 +379,45 @@ body {
 /* Media */
 
 @media (max-width: 768px) {
-    main {
-        flex-flow: column;
-        align-items: stretch;
+    .trigger { display: none; }
+    /* .memes { display: none; } */
+    .main { flex-direction: column; }
+
+    .body, .camera, .header, .main, .footer {
+        width: 100%;
     }
 
-    .aside {
-        flex-basis: auto;
+    /* sidebar */
+    .sidebar {
+        position: relative;
+        height: auto;
+        width: auto;
+
+        display: flex;
+        flex-direction: row;
+    }
+    .sidebar > .aboutme {
+        width: 400px;
+    }
+    .sidebar > .aboutme > .avatar {
+        width: 200px;
+        height: 200px;
+        margin: 0 10px;
+    }
+    .sidebar hr {
+        margin: 0 20px;
+    }
+    
+    /* content */
+    .content {
+        height: auto;
+        width: auto;
+    }
+    .articles > .assignment > img {
+        top: 200px;
+    }
+    .articles > .assignment > table {
+        top: 380px;
     }
 }
 
@@ -382,32 +437,50 @@ body {
     background-repeat: no-repeat;
     transition: background-image 1s;
 }
+.trigger::after {
+    content: '可爱のErina';
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    bottom: -20px;
+    background-color: lightpink;
+    text-align: center;
+    transition: content 1s;
+}
 .trigger:hover {
     background-image: url('../pics/rabi2.png');
 }
-.trigger:hover ~ .header {
+.trigger:hover::after {
+    content: '可爱のCocoa';
+}
+.trigger:hover ~ .camera .header {
     /* animation: headerAnimation 10s infinite; */
     transform: rotateY(-30deg) translateZ(-500px) translateX(130px);
 }
-.trigger:hover ~ .main > .sidebar {
+.trigger:hover ~ .camera .footer {
+    transform: rotateY(17deg) translateZ(-250px) translateX(-500px);
+}
+.trigger:hover ~ .camera .main > .sidebar {
     /* animation: sidebarAnimation 10s infinite; */
     transform: rotateX(1deg) rotateY(10deg) translateZ(-100px) translateX(-200px);
 }
-.trigger:hover ~ .main > .content {
+.trigger:hover ~ .camera .main > .content {
     /* animation: contentAnimation 10s infinite; */
     transform: rotateX(1deg) rotateY(-10deg) translateZ(-100px) translateX(200px);
 }
-.trigger:hover ~ .header > .header-first > .title::after {
+.trigger:hover ~ .camera .header > .header-first > .title::after {
     content: "o(≧▽≦)o 点到什么奇怪的开关啦！ w(ﾟДﾟ)w";
     animation: none;
 }
 
-body, .main {
+.main, .camera {
+    --perspective: 500px;
+    --perspective-origin: 50% 0%;
     transform-style: preserve-3d;
-    perspective: 500px;
-    perspective-origin: 50% 0%;
+    perspective: var(--perspective);
+    perspective-origin: var(--perspective-origin);
 }
-.header {
+.header, .footer {
     transform: rotateY(0) translateZ(0);
     transform-style: preserve-3d;
     transition: transform 5s;
@@ -548,7 +621,7 @@ body, .main {
     transform-style: preserve-3d;
     transition: transform 3s ease-in-out 0.3s;
 }
-.trigger:hover ~ .cube-wrapper {
+.trigger:hover ~ .camera .cube-wrapper {
     transform: translate3d(0, -300px, 100px);
 }
 
@@ -571,4 +644,116 @@ body, .main {
     100% {
         transform: rotateY(360deg) rotateX(360deg);
     }
+}
+
+/* Memes Animation */
+
+.memes {
+    transform-style: preserve-3d;
+    perspective: var(--perspective);
+    perspective-origin: var(--perspective-origin);
+}
+.memes > img {
+    transform: translate3d(0, 0, 0);
+    transition: transform 3s ease-in-out 0.3s;
+}
+.trigger:hover ~ .camera .main .memes > img {
+    transform: translate3d(50px, 0, 30px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(2n) {
+    transform: translate3d(-5px, 0, 20px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(3n) {
+    transform: translate3d(15px, 0, 15px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(3n+1) {
+    transform: translate3d(110px, -10px, 40px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(4n) {
+    transform: translate3d(2px, 3px, 17px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(5n) {
+    transform: translate3d(30px, -5px, 20px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(6n) {
+    transform: translate3d(1px, -2px, 23px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(7n) {
+    transform: translate3d(-14px, 10px, 23px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(8n) {
+    transform: translate3d(23px, -10px, 15px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(9n) {
+    transform: translate3d(-3px, 20px, 40px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(10n) {
+    transform: translate3d(-14px, 10px, 23px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(11n) {
+    transform: translate3d(-5px, 0, 50px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(13n) {
+    transform: translate3d(-14px, 10px, 23px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(17n) {
+    transform: translate3d(-14px, -10px, 23px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(19n) {
+    transform: translate3d(70px, -10px, 50px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(23n) {
+    transform: translate3d(91px, 10px, 73px);
+}
+.trigger:hover ~ .camera .main .memes > img:nth-child(29n) {
+    transform: translate3d(-14px, -10px, 23px);
+}
+/* Classic sequence, right? */
+
+/* Assignemnt */
+.content > .articles > .article.assignment {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+.content > .articles > .article.assignment > * {
+    margin: 5px 0;
+}
+.assignment > h2 {
+    order: -2;
+}
+.assignment > blockquote {
+    order: -2;
+}
+.assignment > img {
+    position: absolute;
+    top: 170px;
+    left: 200px;
+    
+    width: 160px;
+    height: 180px;
+}
+.assignment > ul img {
+    width: 54px;
+    height: 54px;
+}
+.assignment > table {
+    position: absolute;
+    top: 350px;
+    left: 190px;
+    width: 220px;
+    height: 196px;
+    border-collapse: collapse;
+}
+.assignment > table tr {
+    border-bottom: 1px solid var(--grey);
+    text-align: center;
+}
+.assignment > .flex-test {
+    order: -1;
+    align-self: flex-end;
 }
