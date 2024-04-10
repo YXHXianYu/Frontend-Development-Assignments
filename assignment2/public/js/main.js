@@ -1,97 +1,42 @@
+/**
+ * 本项目采用ECS架构，面向数据编程
+ * 十分优雅的一种编程方式
+ */
 
-/* Global Context */
-let g_context = {}
+import { g_context } from './global_context.js'
 
-/* Utils */
+import * as cp from './components.js'
+import * as sys from './systems.js'
 
-function createElement(tag, cls, content) {
-    const new_element = document.createElement(tag)
-    new_element.className = cls
-    new_element.textContent = content
-    return new_element
-}
+/* Basic Func */
 
-/* Components */
-
-class ComponentBase {
-    constructor(mounted_element) {
-        let component_name = this.constructor.name
-        mounted_element['component_name'] = this
-        console.log(this.constructor.name)
+function initialize() {
+    for (let component_name in cp) {
+        g_context.component_lists[component_name] = []
+    }
+    for (let system_name in sys) {
+        g_context.systems[system_name] = new sys[system_name]()
+        console.log("Loaded : " + system_name)
     }
 }
 
-class InputStateComponent extends ComponentBase {
-    constructor(mounted_element) {
-        super(mounted_element)
-    }
-}
-
-// TODO: use ecs
-
-class InputSystem {
-    constructor() {
-        const body = document.body
-        this.input_state_component = new InputStateComponent(body)
-        this.state = {}
-        const that = this
-
-        body.addEventListener('keydown', function(event) {
-            that.state[event.key] = true
-        })
-        body.addEventListener('keyup', function(event) {
-            that.state[event.key] = false
-        })
-    }
-}
-
-class WorldManager {
-    constructor() {
-        const content = document.querySelector('.content')
-        this.player  = createElement('p', 'entity player', 'player')
-        content.appendChild(this.player)
-        this.player.x = 50
-        this.player.y = 200
-
-        this.player_velocity = 8;
-    }
-
-    tick() {
-
-        console.log(g_context.input_system.state)
-        
-        if (g_context.input_system.state['w']) {
-            this.player.y += 0.5 * this.player_velocity
-        }
-        if (g_context.input_system.state['s']) {
-            this.player.y -= 0.5 * this.player_velocity
-        }
-        if (g_context.input_system.state['a']) {
-            this.player.x -= 0.5 * this.player_velocity
-        }
-        if (g_context.input_system.state['d']) {
-            this.player.x += 0.5 * this.player_velocity
-        }
-
-        this.player.style.bottom = this.player.y.toString() + 'px'
-        this.player.style.left = this.player.x.toString() + 'px'
-    }
-}
-
-// === Initialize ===
-g_context.input_system = new InputSystem()
-g_context.world_manager = new WorldManager()
-
-
-// === Main Loop ===
 function main_loop_single() {
-    g_context.world_manager.tick()
+    for (let system in g_context.systems) {
+        g_context.systems[system].tick()
+    }
 }
 
 function main_loop() {
-    setTimeout(main_loop, 20)
-
+    setTimeout(main_loop, 20) // 50fps
     main_loop_single()
+    g_context.tick += 1
 }
 
-main_loop()
+function main() {
+    initialize()
+    main_loop()
+}
+
+/* Main */
+
+main()

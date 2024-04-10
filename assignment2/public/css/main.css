@@ -99,6 +99,6 @@ html, body {
     position: relative;
 }
 
-.content > .entity {
+.entity * {
     position: absolute;
 }
