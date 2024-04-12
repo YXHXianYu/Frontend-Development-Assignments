@@ -20,21 +20,21 @@ function initialize() {
     }
 }
 
-function main_loop_single() {
+function mainLoopSingle() {
     for (let system in g_context.systems) {
         g_context.systems[system].tick()
     }
 }
 
-function main_loop() {
-    setTimeout(main_loop, 20) // 50fps
-    main_loop_single()
+function mainLoop() {
+    setTimeout(mainLoop, 20) // 50fps
+    mainLoopSingle()
     g_context.tick += 1
 }
 
 function main() {
     initialize()
-    main_loop()
+    mainLoop()
 }
 
 /* Main */

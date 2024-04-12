@@ -2,6 +2,8 @@ import { g_context } from './global_context.js'
 
 import { assert } from './utils.js'
 
+import EventEmitter from '../../node_modules/eventemitter3/index.mjs'
+
 /* Components */
 
 // 每个Component有两个索引，一个为entity，另一个为component list
@@ -118,10 +120,12 @@ export class LevelComponent extends ComponentBase {
 }
 
 export class HitboxComponent extends ComponentBase {
-    constructor(entity, width, height) {
+    constructor(entity, width, height, types = []) {
         super(entity)
 
         this.width = width
         this.height = height
+        this.types = types
+        this.event_emitter = new EventEmitter()
     }
 }

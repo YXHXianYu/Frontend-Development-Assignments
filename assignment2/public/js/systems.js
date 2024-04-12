@@ -2,10 +2,7 @@ import { g_context } from './global_context.js'
 
 import * as cp from './components.js'
 
-import {
-    createElement,
-    assert
-} from './utils.js'
+import * as util from './utils.js'
 
 /* Systems */
 
@@ -26,7 +23,7 @@ export class InputSystem {
 
 export class PlayerManager {
     constructor() {
-        let entity = createElement(document.querySelector('.entity'), 'p', 'player', 'player')
+        let entity = util.createElement(document.querySelector('.entity'), 'p', 'player', 'player')
         let player = new cp.PlayerComponent(entity)
         let player_transform = new cp.TransformComponent(entity, 250, 300)
         let player_move = new cp.MoveComponent(entity, 10)
@@ -38,6 +35,7 @@ export class PlayerManager {
             let entity = player.entity
             let player_transform = entity['TransformComponent']
             let player_move = entity['MoveComponent']
+            let player_hitbox = entity['HitboxComponent']
 
             // Movement
 
@@ -58,14 +56,14 @@ export class PlayerManager {
 
             // Fire
             if (player.fire_last_tick + player.fire_cd <= g_context.tick) {
-                this.fire_straight(player_transform.x, player_transform.y)
+                this.fireStraight(player_transform.x + player_hitbox.width / 2, player_transform.y + player_hitbox.height)
                 player.fire_last_tick = g_context.tick
             }
         }
     }
 
-    fire_straight(x, y) {
-        let entity = createElement(document.querySelector('.entity'), 'p', 'bullet', 'bullet')
+    fireStraight(x, y) {
+        let entity = util.createElement(document.querySelector('.entity'), 'p', 'bullet', 'bullet')
         let bullet = new cp.BulletComponent(entity)
         let bullet_transform = new cp.TransformComponent(entity, x, y)
         let bullet_move = new cp.MoveComponent(entity, 20)
@@ -134,11 +132,7 @@ export class LevelManager {
     }
 
     spawn(x, y) {
-        let entity = createElement(document.querySelector('.entity'), 'p', 'enemy', 'enemy')
-        let enemy = new cp.EnemyComponent(entity)
-        let enemy_transform = new cp.TransformComponent(entity, x, y)
-        let enemy_move = new cp.MoveComponent(entity, 2)
-        let enemy_hitbox = new cp.HitboxComponent(entity, 50, 50)
+        util.createEnemy(x, y)
 
         console.log("Spawned enemy")
     }
@@ -155,15 +149,21 @@ export class PhysicsSystem {
             for (let j = i + 1; j < hitbox_length; j++) {
                 let hitbox2 = g_context.component_lists['HitboxComponent'][j]
 
-                if (this.is_collide(hitbox1, hitbox2)) {
+                if (this.isCollide(hitbox1, hitbox2)) {
                     console.log("Collision detected")
-                    // TODO: collision handling
+                    // Collision handling, using observer pattern (event emitter)
+                    for (let type in hitbox1.types) {
+                        hitbox2.event_emitter.emit(type, hitbox1)
+                    }
+                    for (let type in hitbox2.types) {
+                        hitbox1.event_emitter.emit(type, hitbox2)
+                    }
                 }
             }
         }
     }
 
-    is_collide(hitbox1, hitbox2) {
+    isCollide(hitbox1, hitbox2) {
         let entity1 = hitbox1.entity
         let entity2 = hitbox2.entity
 
@@ -180,7 +180,7 @@ export class PhysicsSystem {
         let width2 = hitbox2.width
         let height2 = hitbox2.height
 
-        return this.is_intersect(
+        return this.isIntersect(
             {
                 x1: x1,
                 x2: x1 + width1,
@@ -195,7 +195,7 @@ export class PhysicsSystem {
         )
     }
 
-    is_intersect(rect1, rect2) {
+    isIntersect(rect1, rect2) {
         // 检查一个矩形是否在另一个矩形的左侧、右侧、上方或下方
         // 如果是，那么它们不相交
         if (rect1.x2 < rect2.x1 || rect1.x1 > rect2.x2 ||
@@ -214,12 +214,12 @@ export class RenderHitBoxSystem {
             let entity = hitbox.entity
             let border = entity.querySelector('.border')
             if (border === null) {
-                this.draw_hitbox(entity, hitbox.width, hitbox.height)
+                this.drawHitbox(entity, hitbox.width, hitbox.height)
             }
         }
     }
 
-    draw_hitbox(entity, width, height) {
+    drawHitbox(entity, width, height) {
         let border = document.createElement('div')
 
         border.className = 'border'

@@ -1,3 +1,4 @@
+import * as cp from './components.js'
 
 /* Utils */
 
@@ -13,4 +14,12 @@ export function assert(condition, message) {
     if (!condition) {
         throw new Error(message)
     }
+}
+
+export function createEnemy(x, y) {
+    let entity = createElement(document.querySelector('.entity'), 'p', 'enemy', 'enemy')
+    let enemy = new cp.EnemyComponent(entity)
+    let enemy_transform = new cp.TransformComponent(entity, x, y)
+    let enemy_move = new cp.MoveComponent(entity, 2)
+    let enemy_hitbox = new cp.HitboxComponent(entity, 50, 50)
 }
