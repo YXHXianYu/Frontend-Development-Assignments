@@ -69,14 +69,19 @@ export class PlayerManager {
 
             // Fire
             if (player.fire_last_tick + player.fire_cd <= g_context.tick) {
-                this.fireStraight(player_transform.x, player_transform.y - player_hitbox.height)
+                const v = settings.FPS_INTERVAL
+
+                for(let i = -player.fire_level; i <= player.fire_level; i++) {
+                    this.fireStraight(player_transform.x, player_transform.y - player_hitbox.height, 0.1 * v * i, -v)
+                }
+
                 player.fire_last_tick = g_context.tick
             }
         }
     }
 
-    fireStraight(x, y) {
-        utils.createBullet(x, y, 0, -1 * settings.FPS_INTERVAL)
+    fireStraight(x, y, v_x, v_y) {
+        utils.createBullet(x, y, v_x, v_y)
     }
 }
 
@@ -109,24 +114,91 @@ export class MoveSystem {
 export class LevelManager {
     constructor() {
         for (let x = 150; x <= 350; x += 100) {
-            this.spawn(x, 0)
+            this.spawn(x, 0, "enemy1")
         }
         
-        let level = new cp.LevelComponent(document.body)
+        const level = new cp.LevelComponent(document.body)
+        const game_state = new cp.GameStateComponent(document.body)
     }
 
     tick() {
         for (let level of g_context.component_lists_values('LevelComponent')) {
 
-            if (level.spawn_last_tick + level.spawn_cd <= g_context.tick) {
-                this.spawn(Math.random() * 500, 0)
-                level.spawn_last_tick = g_context.tick
+            if (level.spawn_last_tick_enemy1 + level.spawn_cd_enemy1 <= g_context.tick) {
+                this.spawn(Math.random() * 400, 0, "enemy1")
+                level.spawn_last_tick_enemy1 = g_context.tick
+            }
+
+            if (level.spawn_last_tick_enemy2 + level.spawn_cd_enemy2 <= g_context.tick) {
+                this.spawn(Math.random() * 400, 0, "enemy2")
+                level.spawn_last_tick_enemy2 = g_context.tick
+            }
+
+            if (level.spawn_last_tick_enemy3 + level.spawn_cd_enemy3 <= g_context.tick) {
+                this.spawn(Math.random() * 400, 0, "enemy3")
+                level.spawn_last_tick_enemy3 = g_context.tick
             }
         }
+
+        const score = g_context.component_lists_values('ScoreComponent').next().value
+        const player = g_context.component_lists_values('PlayerComponent').next().value
+        const level = g_context.component_lists_values('LevelComponent').next().value
+
+        if (player === undefined || score === undefined || level === undefined) {
+            return
+        }
+
+        while(level.bonus[0] !== undefined && score.score >= level.bonus[0][0]) {
+            utils.createItem(Math.random() * 400, 0, level.bonus[0][1])
+            level.bonus.shift()
+        }
+
+        if (score.score >= 10000) {
+            player.fire_cd = 1
+
+            level.spawn_cd_enemy1 = 1
+            level.spawn_cd_enemy2 = 2
+            level.spawn_cd_enemy3 = 5
+
+        } else if (score.score >= 2000) {
+            player.fire_cd = 1
+
+            level.spawn_cd_enemy1 = 2
+            level.spawn_cd_enemy2 = 5
+            level.spawn_cd_enemy3 = 25
+
+        } else if (score.score >= 500) {
+            player.fire_cd = 1
+
+            level.spawn_cd_enemy1 = 2
+            level.spawn_cd_enemy2 = 5
+            level.spawn_cd_enemy3 = 100
+
+        } else if (score.score >= 300) {
+            player.fire_cd = 2
+
+            level.spawn_cd_enemy1 = 5
+            level.spawn_cd_enemy2 = 25
+            level.spawn_cd_enemy3 = 500
+
+        } else if (score.score >= 100) {
+            player.fire_cd = 5
+
+            level.spawn_cd_enemy1 = 25
+            level.spawn_cd_enemy2 = 100
+            level.spawn_cd_enemy3 = 1000
+
+        } else if (score.score >= 30) {
+            player.fire_cd = 15
+
+            level.spawn_cd_enemy1 = 100
+            level.spawn_cd_enemy2 = 500
+            level.spawn_cd_enemy3 = 2000
+        } 
     }
 
-    spawn(x, y) {
-        utils.createEnemy(x, y, 0, settings.ENEMY_VELOCITY)
+    spawn(x, y, type) {
+        utils.createEnemy(x, y, type)
     }
 }
 
@@ -236,38 +308,33 @@ export class EntityRemovalSystem {
         let removal_buffer = g_context.component_lists_values('EntityRemovalComponent').next().value.removal_buffer
         
         for (let entity of removal_buffer) {
-            this.removeEntity(entity)
+            utils.removeEntityDirectly(entity)
         }
 
         removal_buffer = []
     }
 
-    removeEntity(entity) {
-        for (let component_name in cp) {
-            if (component_name in entity) {
-                const uuid = entity[component_name].uuid
-                delete entity[component_name]
-                delete g_context.component_lists[component_name][uuid]
-            }
-        }
-        entity.remove()
-    }
 }
 
 export class ObstacleSpawnSystem {
     constructor() {
         // left
-        utils.createObstacle(-102, -100, 100, 800 + 200, true)
+        utils.createObstacle(-102, -100, 100, 800 + 200, false)
         // right
-        utils.createObstacle(480, -100, 100, 800 + 200, true)
+        utils.createObstacle(480, -100, 100, 800 + 200, false)
         // top
         utils.createObstacle(-102, -123, 682, 100, false)
         // bottom
         utils.createObstacle(-102, 679, 682, 100, false)
+
+        // left big
+        utils.createObstacle(-400, -1000, 100, 3000, true)
+        // right big
+        utils.createObstacle(700, -1000, 100, 3000, true)
         // top big
-        utils.createObstacle(-102, -423, 682, 100, true)
+        utils.createObstacle(-1000, -423, 3000, 100, true)
         // bottom big
-        utils.createObstacle(-102, 879, 682, 100, true)
+        utils.createObstacle(-1000, 879, 3000, 100, true)
     }
 
     tick() {}
@@ -284,17 +351,21 @@ export class RenderSystem {
             if (texture === null) {
                 this.applyTexture(
                     entity,
-                    renderable.pic_path,
+                    renderable.frames,
                     renderable.width,
                     renderable.height,
                     renderable.dx,
                     renderable.dy,
                 )
+            } else {
+                const cur_tick = g_context.tick % renderable.max_tick
+                const cur_frame = Math.floor(cur_tick / renderable.max_tick * renderable.frames.length)
+                texture.style.backgroundImage = 'url(' + renderable.frames[cur_frame] + ')'
             }
         }
     }
 
-    applyTexture(entity, path, width, height, dx, dy) {
+    applyTexture(entity, frames, width, height, dx, dy) {
         const texture = document.createElement('div')
         const debug_tool = g_context.component_lists_values('DebugToolComponent').next().value
 
@@ -304,15 +375,49 @@ export class RenderSystem {
         texture.style.border = '1px solid green'
         texture.style.borderColor = (debug_tool.is_enable) ? 'green' : 'transparent';
 
-        texture.style.top = dx.toString() + 'px'
-        texture.style.left = dy.toString() + 'px'
+        texture.style.left = dx.toString() + 'px'
+        texture.style.top = dy.toString() + 'px'
         texture.style.width = width.toString() + 'px'
         texture.style.height = height.toString() + 'px'
-        texture.style.backgroundImage = 'url(' + path + ')'
+        texture.style.backgroundImage = 'url(' + frames[0] + ')'
         texture.style.backgroundSize = 'cover'
         texture.style.zIndex = '-1'
 
         entity.appendChild(texture)
+    }
+}
+
+export class AnimationSystem {
+    constructor() {}
+
+    tick() {
+        for (const animation of g_context.component_lists_values('AnimationComponent')) {
+            if (animation.start_tick === null) {
+                animation.start_tick = g_context.tick
+
+                const animation_entity = animation.entity
+                animation_entity.style.position = 'absolute'
+                animation_entity.style.left = animation.x.toString() + 'px'
+                animation_entity.style.top = animation.y.toString() + 'px'
+                animation_entity.style.width = animation.width.toString() + 'px'
+                animation_entity.style.height = animation.height.toString() + 'px'
+
+                animation_entity.style.backgroundSize = 'cover'
+
+            } else {
+                const cur_tick = g_context.tick - animation.start_tick
+                const cur_frame = Math.floor(cur_tick / animation.max_tick * animation.frames.length)
+
+                if (cur_frame >= animation.frames.length) {
+                    utils.removeEntity(animation.entity)
+                    continue
+                }
+
+                const animation_entity = animation.entity
+                animation_entity.style.backgroundImage = 'url(' + animation.frames[cur_frame] + ')'
+            }
+        }
+
     }
 }
 
@@ -348,4 +453,47 @@ export class DebugTool {
             }
         }
     }
+}
+
+export class ScoreSystem {
+    constructor() {
+        const score = new cp.ScoreComponent(document.body)
+    }
+
+    tick() {
+        for (const score of g_context.component_lists_values('ScoreComponent')) {
+            const score_bar = score.score_bar
+            score_bar.textContent = 'Score: ' + score.score
+        }
+    }
+}
+
+export class UIManager {
+    constructor() {
+        const ui = document.getElementsByClassName('ui')[0]
+
+        const pause_button = utils.createElement(ui, 'div', 'pause', '')
+
+        pause_button.addEventListener('click', function() {
+            console.log('Pause button clicked, state changes from', g_context.component_lists_values('GameStateComponent').next().value.state)
+
+            const game_state = g_context.component_lists_values('GameStateComponent').next().value
+            if (game_state.state === cp.GameStateComponent.GAME_STATE_GAMEOVER) {
+                return
+            } else if (game_state.state === cp.GameStateComponent.GAME_STATE_PAUSE) {
+                game_state.state = cp.GameStateComponent.GAME_STATE_RUNNING
+            } else if (game_state.state === cp.GameStateComponent.GAME_STATE_RUNNING) {
+                game_state.state = cp.GameStateComponent.GAME_STATE_PAUSE
+            }
+        })
+
+        const restart_button = utils.createElement(ui, 'div', 'restart', '')
+
+        restart_button.addEventListener('click', function() {
+            const game_state = g_context.component_lists_values('GameStateComponent').next().value
+            game_state.state = cp.GameStateComponent.GAME_STATE_NEED_TO_RESTART
+        })
+    }
+
+    tick() {}
 }

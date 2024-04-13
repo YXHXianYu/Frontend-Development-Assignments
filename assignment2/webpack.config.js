@@ -5,7 +5,7 @@ const CopyPlugin = require('copy-webpack-plugin')
 module.exports = {
   entry: './src/index.js', // 项目的入口文件
   output: {
-    path: path.resolve(__dirname, 'build'), // 打包后的文件存放路径
+    path: path.resolve(__dirname, 'public'), // 打包后的文件存放路径
     filename: 'bundle.js' // 打包后的文件名
   },
   module: {

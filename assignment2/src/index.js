@@ -10,6 +10,7 @@ import g_context from './global_context.js'
 import * as cp from './components.js'
 import * as sys from './systems.js'
 import * as settings from './settings.js'
+import * as utils from './utils.js'
 
 /* Basic Func */
 
@@ -21,6 +22,16 @@ function initialize() {
         g_context.systems[system_name] = new sys[system_name]()
         console.log("Loaded : " + system_name)
     }
+    g_context.tick = 0
+}
+
+function deconstructor() {
+    document.querySelectorAll('.entity *').forEach((entity) => {
+        utils.removeEntityDirectly(entity)
+    })
+    document.querySelectorAll('.ui *').forEach((entity) => {
+        utils.removeEntityDirectly(entity)
+    })
 }
 
 function mainLoopSingle() {
@@ -31,8 +42,14 @@ function mainLoopSingle() {
 
 function mainLoop() {
     setTimeout(mainLoop, settings.FPS_INTERVAL)
-    mainLoopSingle()
-    g_context.tick += 1
+    if (g_context.component_lists_values('GameStateComponent').next().value.state === cp.GameStateComponent.GAME_STATE_NEED_TO_RESTART) {
+        deconstructor()
+        initialize()
+    }
+    if (g_context.component_lists_values('GameStateComponent').next().value.state === cp.GameStateComponent.GAME_STATE_RUNNING) {
+        mainLoopSingle()
+        g_context.tick += 1
+    }
 }
 
 function main() {

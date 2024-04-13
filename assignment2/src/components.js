@@ -106,12 +106,16 @@ export class PlayerComponent extends ComponentBase {
         this.fire_last_tick = -Infinity
         this.fire_cd = 25
         this.velocity = velocity
+
+        this.fire_level = 0
     }
 }
 
 export class EnemyComponent extends ComponentBase {
-    constructor(entity) {
+    constructor(entity, score) {
         super(entity)
+
+        this.score = score
     }
 }
 
@@ -125,8 +129,28 @@ export class LevelComponent extends ComponentBase {
     constructor(entity) {
         super(entity)
 
-        this.spawn_last_tick = 0
-        this.spawn_cd = 250
+
+        this.spawn_last_tick_enemy1 = 0
+        this.spawn_cd_enemy1 = 200
+
+        this.spawn_last_tick_enemy2 = 0
+        this.spawn_cd_enemy2 = 1000
+
+        this.spawn_last_tick_enemy3 = 0
+        this.spawn_cd_enemy3 = 2000
+
+        this.bonus = [
+            [1000, "bullet_supply"],
+            [2000, "bullet_supply"],
+            [3000, "bullet_supply"],
+            [4000, "bullet_supply"],
+            [5000, "bullet_supply"],
+            [6000, "bullet_supply"],
+            [7000, "bullet_supply"],
+            [8000, "bullet_supply"],
+            [9000, "bullet_supply"],
+            [10000, "bullet_supply"],
+        ]
     }
 }
 
@@ -149,14 +173,17 @@ export class EntityRemovalComponent extends ComponentBase {
 }
 
 export class RenderableComponent extends ComponentBase {
-    constructor(entity, pic_path, width, height, dx, dy) {
+    constructor(entity, width, height, dx, dy, frames, max_tick) {
         super(entity)
 
-        this.pic_path = pic_path
         this.width = width
         this.height = height
         this.dx = dx
         this.dy = dy
+
+        this.cur_frame = 0
+        this.frames = frames
+        this.max_tick = max_tick
     }
 }
 
@@ -165,5 +192,55 @@ export class DebugToolComponent extends ComponentBase {
         super(entity)
 
         this.is_enable_border = true
+    }
+}
+
+export class ScoreComponent extends ComponentBase {
+    constructor(entity) {
+        super(entity)
+
+        this.score = 0
+
+        this.score_bar = document.querySelector('.score')
+        if (this.score_bar === null) {
+            const ui = document.getElementsByClassName('ui')[0]
+            this.score_bar = utils.createElement(ui, 'div', 'score', '')
+        }
+    }
+}
+
+export class GameStateComponent extends ComponentBase {
+    static GAME_STATE_RUNNING = 0
+    static GAME_STATE_GAMEOVER = 1
+    static GAME_STATE_PAUSE = 2
+    static GAME_STATE_NEED_TO_RESTART = 3
+
+    constructor(entity) {
+        super(entity)
+
+        this.state = GameStateComponent.GAME_STATE_RUNNING
+    }
+}
+
+export class AnimationComponent extends ComponentBase {
+    constructor(entity, x, y, width, height, frames, max_tick) {
+        super(entity)
+
+        this.x = x
+        this.y = y
+        this.width = width
+        this.height = height
+
+        this.start_tick = null
+        this.frames = frames
+        this.max_tick = max_tick
+    }
+}
+
+export class ItemComponent extends ComponentBase {
+    constructor(entity, type) {
+        super(entity)
+
+        this.type = type
     }
 }
