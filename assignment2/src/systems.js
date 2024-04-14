@@ -72,7 +72,9 @@ export class PlayerManager {
                 const v = settings.FPS_INTERVAL
 
                 for(let i = -player.fire_level; i <= player.fire_level; i++) {
-                    this.fireStraight(player_transform.x, player_transform.y - player_hitbox.height, 0.1 * v * i, -v)
+                    this.fireStraight(player_transform.x, player_transform.y - player_hitbox.height,
+                        player.fire_level > 0 ? v * (0.15 * (player.fire_level + 1)) * i / player.fire_level : 0,
+                    -v)
                 }
 
                 player.fire_last_tick = g_context.tick
@@ -451,6 +453,24 @@ export class DebugTool {
                     entity.style.color = 'black'
                 })
             }
+        }
+
+        if (input.keydown['i']) {
+            const player = g_context.component_lists_values('PlayerComponent').next().value
+            player.fire_level += 1
+        }
+
+        if (input.keydown['u']) {
+            const player = g_context.component_lists_values('PlayerComponent').next().value
+            player.fire_level = Math.max(0, player.fire_level - 1)
+        }
+
+        if (input.keydown['j']) {
+            utils.createItem(Math.random() * 400, 0, 'bomb_supply')
+        }
+
+        if (input.keydown['k']) {
+            utils.createItem(Math.random() * 400, 0, 'bullet_supply')
         }
     }
 }

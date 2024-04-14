@@ -130,6 +130,8 @@ export function createPlayer(x, y, velocity) {
 function createEnemyDeadAnimation(x, y, type) {
     // animation
     const animation_entity = createElement(document.getElementsByClassName('entity')[0], 'div', 'animation', '');
+    
+    console.log("type = ", type)
 
     if (type === "enemy1") {
         const animation = new cp.AnimationComponent(animation_entity, x, y, 57, 51, [
@@ -161,22 +163,24 @@ function createEnemyCollisionFunction(entity, enemy, enemy_transform, enemy_hp, 
     return function(hitbox) {
         // Enemy碰到Player直接死亡（不计分）
         if ('PlayerComponent' in hitbox.entity) { // Enemy - Player
-            removeEntity(entity)
-
             // animation
-            createEnemyDeadAnimation(enemy_transform.x - 10, enemy_transform.y + 25)
+            createEnemyDeadAnimation(enemy_transform.x - 10, enemy_transform.y + 25, enemy.type)
+
+            // remove entity
+            removeEntity(entity)
         }
         // Enemy碰到Bullet掉血，死亡则计分
         if ('BulletComponent' in hitbox.entity) { // Enemy - Bullet
             enemy_hp.hp -= 1
             if (enemy_hp.hp <= 0) {
-                removeEntity(entity)
-                
                 // score += 1
                 g_context.component_lists_values('ScoreComponent').next().value.score += enemy.score
 
                 // animation
                 createEnemyDeadAnimation(enemy_transform.x - 10, enemy_transform.y + 25, type)
+
+                // remove entity
+                removeEntity(entity)
             }
         }
         // Enemy碰到Obstacle直接死亡（不计分）
@@ -196,21 +200,21 @@ export function createEnemy(x, y, type) {
     let renderable
 
     if (type === "enemy1") {
-        enemy = new cp.EnemyComponent(entity, 1)
+        enemy = new cp.EnemyComponent(entity, 'enemy1', 1)
         enemy_move = new cp.MoveComponent(entity, 0, settings.ENEMY_VELOCITY)
         enemy_hitbox = new cp.HitboxComponent(entity, 40, 40)
         enemy_hp = new cp.HitPointComponent(entity, 1)
 
         renderable = new cp.RenderableComponent(entity, 57, 43, -9, 20, ['./assets/enemy1.png', './assets/enemy1_1.png'], 150)
     } else if (type === "enemy2") {
-        enemy = new cp.EnemyComponent(entity, 3)
+        enemy = new cp.EnemyComponent(entity, 'enemy2', 3)
         enemy_move = new cp.MoveComponent(entity, 0, settings.ENEMY_VELOCITY * 0.5)
         enemy_hitbox = new cp.HitboxComponent(entity, 50, 100)
         enemy_hp = new cp.HitPointComponent(entity, 3)
 
         renderable = new cp.RenderableComponent(entity, 69, 99, -9, 20, ['./assets/enemy2.png', './assets/enemy2_1.png'], 150)
     } else if (type === "enemy3") {
-        enemy = new cp.EnemyComponent(entity, 20)
+        enemy = new cp.EnemyComponent(entity, 'enemy3', 20)
         enemy_move = new cp.MoveComponent(entity, 0, settings.ENEMY_VELOCITY * 0.2)
         enemy_hitbox = new cp.HitboxComponent(entity, 150, 250)
         enemy_hp = new cp.HitPointComponent(entity, 20)
@@ -271,7 +275,7 @@ export function createItem(x, y, type) {
     const item = new cp.ItemComponent(entity, type)
     const item_transform = new cp.TransformComponent(entity, x, y)
     const item_move = new cp.MoveComponent(entity, 0, settings.ITEM_VELOCITY)
-    const item_hitbox = new cp.HitboxComponent(entity, 40, 40)
+    const item_hitbox = new cp.HitboxComponent(entity, 60, 60)
 
     // physics
     item_hitbox.event_emitter.on('collide', function(hitbox) {
@@ -284,7 +288,19 @@ export function createItem(x, y, type) {
 
                 player.fire_level += 1
             } else if (type == "bomb_supply") {
-                // g_context.component_lists_values('BombComponent').next().value.bomb_count += 1
+                document.querySelectorAll('.entity > .enemy').forEach(function(entity) {
+
+                    // score
+                    const enemy = entity['EnemyComponent']
+                    g_context.component_lists_values('ScoreComponent').next().value.score += enemy.score
+
+                    // animation
+                    const enemy_transform = entity['TransformComponent']
+                    createEnemyDeadAnimation(enemy_transform.x - 10, enemy_transform.y + 25, enemy.type)
+
+                    // remove entity
+                    removeEntity(entity)
+                })
             }
         }
         // Item碰到Obstacle直接消失
@@ -295,11 +311,11 @@ export function createItem(x, y, type) {
 
     // render
     if (type === "bullet_supply") {
-        const renderable = new cp.RenderableComponent(entity, 58, 88, 0, 0, [
+        const renderable = new cp.RenderableComponent(entity, 58, 88, 0, -10, [
             './assets/bullet_supply.png',
         ], 100)
     } else if (type === "bomb_supply") {
-        const renderable = new cp.RenderableComponent(entity, 60, 107, 0, 0, [
+        const renderable = new cp.RenderableComponent(entity, 60, 107, 0, -30, [
             './assets/bomb_supply.png',
         ], 100)
     }

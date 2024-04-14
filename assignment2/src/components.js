@@ -112,9 +112,10 @@ export class PlayerComponent extends ComponentBase {
 }
 
 export class EnemyComponent extends ComponentBase {
-    constructor(entity, score) {
+    constructor(entity, type, score) {
         super(entity)
 
+        this.type = type
         this.score = score
     }
 }
