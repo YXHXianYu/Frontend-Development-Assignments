@@ -141,16 +141,22 @@ export class LevelComponent extends ComponentBase {
         this.spawn_cd_enemy3 = 2000
 
         this.bonus = [
-            [1000, "bullet_supply"],
-            [2000, "bullet_supply"],
-            [3000, "bullet_supply"],
-            [4000, "bullet_supply"],
-            [5000, "bullet_supply"],
-            [6000, "bullet_supply"],
-            [7000, "bullet_supply"],
-            [8000, "bullet_supply"],
-            [9000, "bullet_supply"],
-            [10000, "bullet_supply"],
+            [500,   'bomb_supply'],
+            [1000,  'bullet_supply'],
+            [1000,  'bomb_supply'],
+            [1500,  'bomb_supply'],
+            [2000,  'bullet_supply'],
+            [2500,  'bomb_supply'],
+            [3000,  'bullet_supply'],
+            [4000,  'bullet_supply'],
+            [5000,  'bullet_supply'],
+            [5000,  'bomb_supply'],
+            [6000,  'bullet_supply'],
+            [7000,  'bullet_supply'],
+            [8000,  'bullet_supply'],
+            [9000,  'bullet_supply'],
+            [10000, 'bullet_supply'],
+            [15000, 'bomb_supply'],
         ]
     }
 }
