@@ -43,8 +43,12 @@ function mainLoopSingle() {
 function mainLoop() {
     setTimeout(mainLoop, settings.FPS_INTERVAL)
     if (g_context.component_lists_values('GameStateComponent').next().value.state === cp.GameStateComponent.GAME_STATE_NEED_TO_RESTART) {
+        const replay_is_running = g_context.component_lists_values('ReplayComponent').next().value.is_running
+
         deconstructor()
         initialize()
+
+        g_context.component_lists_values('ReplayComponent').next().value.is_running = replay_is_running
     }
     if (g_context.component_lists_values('GameStateComponent').next().value.state === cp.GameStateComponent.GAME_STATE_RUNNING) {
         mainLoopSingle()

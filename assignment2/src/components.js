@@ -251,3 +251,16 @@ export class ItemComponent extends ComponentBase {
         this.type = type
     }
 }
+
+export class ReplayComponent extends ComponentBase {
+    constructor(entity) {
+        super(entity)
+        
+        this.is_running = false
+
+        this.replay = utils.getLocalStorage('replay')
+        if (this.replay === null || this.replay === undefined || !utils.isList(this.replay)) {
+            this.replay = []
+        }
+    }
+}

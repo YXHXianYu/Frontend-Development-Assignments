@@ -2,6 +2,33 @@ import * as cp from './components.js'
 import * as settings from './settings.js'
 import g_context from './global_context.js'
 
+/* Database */
+
+export function getLocalStorage(key) {
+    try {
+        return JSON.parse(localStorage.getItem(key))
+    } catch (e) {
+        console.error("Error in getLocalStorage: ", e.name)
+        return null
+    }
+}
+
+export function setLocalStorage(key, value) {
+    try {
+        localStorage.setItem(key, JSON.stringify(value))
+    } catch (e) {
+        if (e.name === 'QuotaExceededError') {
+            console.error("Error in getLocalStorage: ", e.name, ' (LocalStorage limit exceeded)')
+        } else {
+            console.error("Error in getLocalStorage: ", e.name)
+        }
+    }
+}
+
+export function isList(obj) {
+    return typeof obj.push === 'function'
+}
+
 /* Utils */
 
 export function createElement(entity, tag, cls, content) {

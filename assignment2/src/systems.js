@@ -8,7 +8,7 @@ import * as utils from './utils.js'
 
 export class InputSystem {
     constructor() {
-        let input = new cp.InputStateComponent(document.body)
+        const input = new cp.InputStateComponent(document.body)
 
         document.body.addEventListener('keydown', function(event) {
             input.state[event.key] = true
@@ -22,12 +22,34 @@ export class InputSystem {
 
     tick() {
         const input = g_context.component_lists_values('InputStateComponent').next().value
+        const replay = g_context.component_lists_values('ReplayComponent').next().value
 
-        input.keydown = input.keydown_buffer
-        input.keydown_buffer = {}
+        if (g_context.tick % 20 === 0) {
+            console.log(replay.is_running, replay.replay.slice(0,100))
+        }
+        if (!replay.is_running) {
+            input.keydown = input.keydown_buffer
+            input.keydown_buffer = {}
 
-        input.keyup = input.keyup_buffer
-        input.keyup_buffer = {}
+            input.keyup = input.keyup_buffer
+            input.keyup_buffer = {}
+
+            replay.replay[g_context.tick] = []
+            replay.replay[g_context.tick][0] = input.state
+            replay.replay[g_context.tick][1] = input.keydown
+            replay.replay[g_context.tick][2] = input.keyup
+
+            utils.setLocalStorage('replay', replay.replay)
+
+        } else { // TODO: DEBUGING ============================================== (replay is ok, but input may be not ok)
+            if (replay.replay[g_context.tick] !== undefined) {
+                input.state = replay.replay[g_context.tick][0]
+                input.keydown = replay.replay[g_context.tick][1]
+                input.keyup = replay.replay[g_context.tick][2]
+            } else {
+                // TODO
+            }
+        }
     }
 }
 
@@ -516,4 +538,31 @@ export class UIManager {
     }
 
     tick() {}
+}
+
+export class ReplaySystem {
+    constructor() {
+        const replay = new cp.ReplayComponent(document.body)
+    }
+
+    tick() {
+        const replay = g_context.component_lists_values('ReplayComponent').next().value
+        const input = g_context.component_lists_values('InputStateComponent').next().value
+        const game_state = g_context.component_lists_values('GameStateComponent').next().value
+
+        // TODO: add a replay button
+        // TODO: add replay auto close
+        if (input.keydown['r']) {
+            if (replay.is_running) {
+                replay.is_running = false
+
+                game_state.state = cp.GameStateComponent.GAME_STATE_NEED_TO_RESTART
+
+            } else {
+                replay.is_running = true
+
+                game_state.state = cp.GameStateComponent.GAME_STATE_NEED_TO_RESTART
+            }
+        }
+    }
 }
