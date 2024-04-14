@@ -36,6 +36,8 @@ export class InputStateComponent extends ComponentBase {
         this.keydown_buffer = {}
         this.keyup = {}
         this.keyup_buffer = {}
+
+        this.is_initialized = false
     }
 }
 
@@ -257,10 +259,14 @@ export class ReplayComponent extends ComponentBase {
         super(entity)
         
         this.is_running = false
+        this.replay = []
+    }
+}
 
-        this.replay = utils.getLocalStorage('replay')
-        if (this.replay === null || this.replay === undefined || !utils.isList(this.replay)) {
-            this.replay = []
-        }
+export class RandomComponent extends ComponentBase {
+    constructor(entity) {
+        super(entity)
+
+        this.seed = 19260817
     }
 }

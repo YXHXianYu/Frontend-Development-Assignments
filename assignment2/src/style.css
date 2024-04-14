@@ -152,6 +152,8 @@ body {
 
     min-width: 60px;
     min-height: 45px;
+    max-width: 60px;
+    max-height: 45px;
     background-image: url('./assets/pause_nor.png');
 }
 
@@ -173,5 +175,22 @@ body {
 }
 
 .restart:hover {
+    background-image: url('./assets/resume_pressed.png');
+}
+
+.replay {
+    position: absolute;
+    top: 130px;
+    right: 0;
+    margin: 20px;
+
+    min-width: 60px;
+    min-height: 45px;
+    max-width: 60px;
+    max-height: 45px;
+    background-image: url('./assets/resume_nor.png');
+}
+
+.replay:hover {
     background-image: url('./assets/resume_pressed.png');
 }

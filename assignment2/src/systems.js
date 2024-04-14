@@ -17,7 +17,11 @@ export class InputSystem {
 
         if (!input.is_initialized) {
             input.is_initialized = true
+
             if (!replay.is_running) {
+                localStorage.clear()
+                replay.replay = []
+
                 document.body.addEventListener('keydown', function(event) {
                     input.state[event.key] = true
                     input.keydown_buffer[event.key] = true
@@ -26,8 +30,11 @@ export class InputSystem {
                     input.state[event.key] = false
                     input.keyup_buffer[event.key] = true
                 })
+            } else {
+                replay.replay = utils.getLocalStorage('replay')
             }
         }
+
 
         if (!replay.is_running) {
             input.keydown = input.keydown_buffer
@@ -37,25 +44,19 @@ export class InputSystem {
             input.keyup_buffer = {}
 
             replay.replay[g_context.tick] = []
-            replay.replay[g_context.tick][0] = input.state
-            replay.replay[g_context.tick][1] = input.keydown
-            replay.replay[g_context.tick][2] = input.keyup
-
-            replay.replay[g_context.tick][0] = {
-                'w': input.state['w'],
-                'a': input.state['a'],
-                'd': input.state['d'],
-                's': input.state['s'],
-            }
+            replay.replay[g_context.tick][0] = { ...input.state }
+            // replay.replay[g_context.tick][1] = input.keydown
+            // replay.replay[g_context.tick][2] = input.keyup
 
             utils.setLocalStorage('replay', replay.replay)
-
         } else {
-            if (replay.replay[g_context.tick] !== undefined) {
+            if (replay.replay[g_context.tick] != undefined) {
                 input.state = replay.replay[g_context.tick][0]
-                input.keydown = replay.replay[g_context.tick][1]
-                input.keyup = replay.replay[g_context.tick][2]
+                // input.keydown = replay.replay[g_context.tick][1]
+                // input.keyup = replay.replay[g_context.tick][2]
             } else {
+                const game_state = g_context.component_lists_values('GameStateComponent').next().value
+                game_state.state = cp.GameStateComponent.GAME_STATE_NEED_TO_RESTART
             }
         }
     }
@@ -157,17 +158,17 @@ export class LevelManager {
         for (let level of g_context.component_lists_values('LevelComponent')) {
 
             if (level.spawn_last_tick_enemy1 + level.spawn_cd_enemy1 <= g_context.tick) {
-                this.spawn(Math.random() * 400, 0, "enemy1")
+                this.spawn(utils.getRandom() * 400, 0, "enemy1")
                 level.spawn_last_tick_enemy1 = g_context.tick
             }
 
             if (level.spawn_last_tick_enemy2 + level.spawn_cd_enemy2 <= g_context.tick) {
-                this.spawn(Math.random() * 400, 0, "enemy2")
+                this.spawn(utils.getRandom() * 400, 0, "enemy2")
                 level.spawn_last_tick_enemy2 = g_context.tick
             }
 
             if (level.spawn_last_tick_enemy3 + level.spawn_cd_enemy3 <= g_context.tick) {
-                this.spawn(Math.random() * 400, 0, "enemy3")
+                this.spawn(utils.getRandom() * 400, 0, "enemy3")
                 level.spawn_last_tick_enemy3 = g_context.tick
             }
         }
@@ -181,7 +182,7 @@ export class LevelManager {
         }
 
         while(level.bonus[0] !== undefined && score.score >= level.bonus[0][0]) {
-            utils.createItem(Math.random() * 400, 0, level.bonus[0][1])
+            utils.createItem(utils.getRandom() * 400, 0, level.bonus[0][1])
             level.bonus.shift()
         }
 
@@ -496,11 +497,11 @@ export class DebugTool {
         }
 
         if (input.keydown['j']) {
-            utils.createItem(Math.random() * 400, 0, 'bomb_supply')
+            utils.createItem(utils.getRandom() * 400, 0, 'bomb_supply')
         }
 
         if (input.keydown['k']) {
-            utils.createItem(Math.random() * 400, 0, 'bullet_supply')
+            utils.createItem(utils.getRandom() * 400, 0, 'bullet_supply')
         }
     }
 }
@@ -542,6 +543,19 @@ export class UIManager {
         restart_button.addEventListener('click', function() {
             const game_state = g_context.component_lists_values('GameStateComponent').next().value
             game_state.state = cp.GameStateComponent.GAME_STATE_NEED_TO_RESTART
+
+            const replay = g_context.component_lists_values('ReplayComponent').next().value
+            replay.is_running = false
+        })
+
+        const replay_button = utils.createElement(ui, 'div', 'replay', '')
+
+        replay_button.addEventListener('click', function() {
+            const game_state = g_context.component_lists_values('GameStateComponent').next().value
+            game_state.state = cp.GameStateComponent.GAME_STATE_NEED_TO_RESTART
+
+            const replay = g_context.component_lists_values('ReplayComponent').next().value
+            replay.is_running = true
         })
     }
 
@@ -563,14 +577,19 @@ export class ReplaySystem {
         if (input.keydown['r']) {
             if (replay.is_running) {
                 replay.is_running = false
-
                 game_state.state = cp.GameStateComponent.GAME_STATE_NEED_TO_RESTART
-
             } else {
                 replay.is_running = true
-
                 game_state.state = cp.GameStateComponent.GAME_STATE_NEED_TO_RESTART
             }
         }
     }
+}
+
+export class RandomSystem {
+    constructor() {
+        const random = new cp.RandomComponent(document.body)
+    }
+
+    tick() {}
 }

@@ -15,6 +15,7 @@ export function getLocalStorage(key) {
 
 export function setLocalStorage(key, value) {
     try {
+        localStorage.removeItem(key)
         localStorage.setItem(key, JSON.stringify(value))
     } catch (e) {
         if (e.name === 'QuotaExceededError') {
@@ -347,4 +348,12 @@ export function createItem(x, y, type) {
         ], 100)
     }
 
+}
+
+/* Random */
+
+export function getRandom() {
+    const random = g_context.component_lists_values('RandomComponent').next().value
+    const x = Math.sin(random.seed++) * 10000
+    return x - Math.floor(x)
 }
