@@ -9,24 +9,26 @@ import * as utils from './utils.js'
 export class InputSystem {
     constructor() {
         const input = new cp.InputStateComponent(document.body)
-
-        document.body.addEventListener('keydown', function(event) {
-            input.state[event.key] = true
-            input.keydown_buffer[event.key] = true
-        })
-        document.body.addEventListener('keyup', function(event) {
-            input.state[event.key] = false
-            input.keyup_buffer[event.key] = true
-        })
     }
 
     tick() {
         const input = g_context.component_lists_values('InputStateComponent').next().value
         const replay = g_context.component_lists_values('ReplayComponent').next().value
 
-        if (g_context.tick % 20 === 0) {
-            console.log(replay.is_running, replay.replay.slice(0,100))
+        if (!input.is_initialized) {
+            input.is_initialized = true
+            if (!replay.is_running) {
+                document.body.addEventListener('keydown', function(event) {
+                    input.state[event.key] = true
+                    input.keydown_buffer[event.key] = true
+                })
+                document.body.addEventListener('keyup', function(event) {
+                    input.state[event.key] = false
+                    input.keyup_buffer[event.key] = true
+                })
+            }
         }
+
         if (!replay.is_running) {
             input.keydown = input.keydown_buffer
             input.keydown_buffer = {}
@@ -39,15 +41,21 @@ export class InputSystem {
             replay.replay[g_context.tick][1] = input.keydown
             replay.replay[g_context.tick][2] = input.keyup
 
+            replay.replay[g_context.tick][0] = {
+                'w': input.state['w'],
+                'a': input.state['a'],
+                'd': input.state['d'],
+                's': input.state['s'],
+            }
+
             utils.setLocalStorage('replay', replay.replay)
 
-        } else { // TODO: DEBUGING ============================================== (replay is ok, but input may be not ok)
+        } else {
             if (replay.replay[g_context.tick] !== undefined) {
                 input.state = replay.replay[g_context.tick][0]
                 input.keydown = replay.replay[g_context.tick][1]
                 input.keyup = replay.replay[g_context.tick][2]
             } else {
-                // TODO
             }
         }
     }
