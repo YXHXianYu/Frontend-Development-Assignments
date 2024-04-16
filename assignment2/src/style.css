@@ -94,6 +94,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    transform: scale(1.0);
 }
 
 .content {
