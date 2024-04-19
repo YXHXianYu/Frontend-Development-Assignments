@@ -593,3 +593,17 @@ export class RandomSystem {
 
     tick() {}
 }
+
+export class WindowSystem {
+    constructor() {
+        window.addEventListener('load', this.update);
+        window.addEventListener('resize', this.update);
+    }
+
+    tick() {}
+
+    update() {
+        const scale = Math.min(window.innerWidth / 480, window.innerHeight / 700) - 0.05;
+        document.querySelector('.main').style.transform = `scale(${scale})`
+    }
+}
