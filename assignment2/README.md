@@ -7,6 +7,8 @@
 * 作业内容：制作一个飞机大战游戏
 * 本次作业内容开源在 [我的Github](https://github.com/YXHXianYu/frontend-development-assignments)
 * 我完成了本次作业中，除了排行榜以外的 **所有** 要求及加分项
+* **请注意（更新）**
+  * **编译结果位于目录 `./public` 中，点击 `index.html` 即可启动**
 * 预览
   * ![image-20240424151559898](./README/image-20240424151559898.png)
 
