@@ -70,6 +70,10 @@ const RegisterPage = () => {
         label="邮箱"
         rules={[
           {
+            required: true,
+            message: "请输入邮箱",
+          },
+          {
             type: "email",
           },
         ]}
@@ -83,6 +87,15 @@ const RegisterPage = () => {
           {
             required: true,
             message: "请输入密码",
+          },
+          { /* 密码要求8-16位 */
+            min: 8,
+            max: 16,
+            message: '密码要求8-16位',
+          },
+          { /* 密码需要同时包含大小写字母与数字 */
+            pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]*$/,
+            message: '密码需要同时包含大小写字母与数字',
           },
         ]}
       >
