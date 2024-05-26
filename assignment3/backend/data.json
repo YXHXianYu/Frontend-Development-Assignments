@@ -1,0 +1,144 @@
+{
+  "exampleKey": {
+    "list": [
+      1,
+      "2str",
+      3.1
+    ],
+    "map": {
+      "map1": 1,
+      "map2": "2str",
+      "map3": 3.1
+    }
+  },
+  "menuList": [
+    {
+      "id": 1,
+      "name": "Main Page",
+      "path": "home",
+      "parent": 0,
+      "enable": true,
+      "locked": true
+    },
+    {
+      "id": 2,
+      "name": "Goods",
+      "path": "good",
+      "parent": 0,
+      "enable": true
+    },
+    {
+      "id": 3,
+      "name": "Orders",
+      "path": "order",
+      "parent": 0,
+      "enable": true
+    },
+    {
+      "id": 4,
+      "name": "Promotion",
+      "path": "promotion",
+      "parent": 0,
+      "enable": true
+    },
+    {
+      "id": 5,
+      "name": "Authority Management",
+      "path": "authority",
+      "parent": 0,
+      "enable": true,
+      "locked": true
+    },
+    {
+      "id": 6,
+      "name": "User List",
+      "path": "user",
+      "parent": 5,
+      "enable": true,
+      "locked": true
+    },
+    {
+      "id": 7,
+      "name": "Menu List",
+      "path": "menu",
+      "parent": 5,
+      "enable": true,
+      "locked": true
+    },
+    {
+      "id": 8,
+      "name": "Role List",
+      "path": "role",
+      "parent": 5,
+      "enable": true,
+      "locked": true
+    }
+  ],
+  "roleList": [
+    {
+      "id": 1,
+      "name": "Administator",
+      "desc": "All permissions",
+      "menu": [
+        "*"
+      ],
+      "enable": true
+    },
+    {
+      "id": 2,
+      "name": "Goods Manager",
+      "desc": "Can manage goods",
+      "menu": [
+        1,
+        2,
+        4
+      ],
+      "enable": true
+    },
+    {
+      "id": 3,
+      "name": "Order Manager",
+      "desc": "Can manage orders",
+      "menu": [
+        1,
+        2
+      ],
+      "enable": true
+    }
+  ],
+  "userList": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "123456",
+      "name": "Administrator",
+      "email": "admin@example.com",
+      "role": [
+        1
+      ],
+      "enable": true
+    },
+    {
+      "id": 2,
+      "username": "goods",
+      "password": "123456",
+      "name": "Goods Manager",
+      "email": "goods@example.com",
+      "role": [
+        2
+      ],
+      "enable": true
+    },
+    {
+      "id": 3,
+      "username": "order",
+      "password": "123456",
+      "name": "Order Manager",
+      "email": "order@example.com",
+      "role": [
+        3
+      ],
+      "enable": true
+    }
+  ]
+}

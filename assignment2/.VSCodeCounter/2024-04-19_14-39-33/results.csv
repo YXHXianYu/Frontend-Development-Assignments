@@ -1,0 +1,13 @@
+"filename", "language", "JSON", "JavaScript", "CSS", "HTML", "comment", "blank", "total"
+"e:\Data\BJTU\BJTU6\12.Frontend-Development-Assignments\assignment2\package-lock.json", "JSON", 6585, 0, 0, 0, 0, 1, 6586
+"e:\Data\BJTU\BJTU6\12.Frontend-Development-Assignments\assignment2\package.json", "JSON", 24, 0, 0, 0, 0, 1, 25
+"e:\Data\BJTU\BJTU6\12.Frontend-Development-Assignments\assignment2\src\components.js", "JavaScript", 0, 207, 0, 0, 7, 59, 273
+"e:\Data\BJTU\BJTU6\12.Frontend-Development-Assignments\assignment2\src\global_context.js", "JavaScript", 0, 12, 0, 0, 1, 3, 16
+"e:\Data\BJTU\BJTU6\12.Frontend-Development-Assignments\assignment2\src\index.html", "HTML", 0, 0, 0, 20, 7, 4, 31
+"e:\Data\BJTU\BJTU6\12.Frontend-Development-Assignments\assignment2\src\index.js", "JavaScript", 0, 47, 0, 0, 6, 14, 67
+"e:\Data\BJTU\BJTU6\12.Frontend-Development-Assignments\assignment2\src\settings.js", "JavaScript", 0, 5, 0, 0, 1, 6, 12
+"e:\Data\BJTU\BJTU6\12.Frontend-Development-Assignments\assignment2\src\style.css", "CSS", 0, 0, 149, 0, 9, 41, 199
+"e:\Data\BJTU\BJTU6\12.Frontend-Development-Assignments\assignment2\src\systems.js", "JavaScript", 0, 464, 0, 0, 21, 125, 610
+"e:\Data\BJTU\BJTU6\12.Frontend-Development-Assignments\assignment2\src\utils.js", "JavaScript", 0, 260, 0, 0, 39, 61, 360
+"e:\Data\BJTU\BJTU6\12.Frontend-Development-Assignments\assignment2\webpack.config.js", "JavaScript", 0, 41, 0, 0, 0, 2, 43
+"Total", "-", 6609, 1036, 149, 20, 91, 317, 8222
