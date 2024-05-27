@@ -1,70 +1,116 @@
-# Getting Started with Create React App
+# 轻量化第三次小作业
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> 21301114 俞贤皓
 
-## Available Scripts
+## 1. 简介
 
-In the project directory, you can run:
+* 作业内容：信息管理系统
+* 本次作业内容开源在 [我的Github](https://github.com/YXHXianYu/frontend-development-assignments)
+* 我完成了以下功能
+  * 纯React静态页面 60分
+  * 后台用户管理 10分
+  * 数据持久化 10分
+  * 后端联动 20分
+  * **总分 100分**（60+10+10+20）
+* 注意：我参考了JS老师提供的第三次作业模板，但我对模板学习后，进行了 **大幅度** 的修改
+  * 修改内容包括但不限于：
+  * **代码风格**：我觉得React把所有内容塞在return里的风格非常不优雅，所以我限制 **一个组件必须在一行内** 编写完成。多余的部分应该在函数体内进行定义。
+    * 例如：![image-20240527134743098](./README/image-20240527134743098.png)
+  * **后端与异步**：因为我添加了后端，所以前端需要通过axios发送请求。而发送请求就带来了异步问题，我将数据交换 **改为了异步**，并且添加了对应的States，**使得数据能够正确刷新**
+  * **封装**：模板中存在一些代码，在多个地方出现，需要抽象和封装。所以我对这些代码进行了抽象和封装，例如：**MyForm**（Login和Register的表格）、**Rules**（Input输入的规则）等。
+  * **UI与风格**：改变了UI风格为 **我最喜欢的像素风格**：像素字体 + 像素背景 + 扁平化UI
+* 预览
+  * ![image-20240527142041637](./README/image-20240527142041637.png)
 
-### `npm start`
+## 2. 代码说明
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* 前端位于 `./frontend`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+  * 构建：`npm install`
 
-### `npm test`
+  * 运行：`npm start`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  * 根据JS老师模板修改的前端，基于 React + Ant Design
 
-### `npm run build`
+  * **预编译版本位于** `./frontend/build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    * 在 `./frontend` 目录下执行
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+      ```bash
+      npm install -g serve
+      serve -s ./build
+      ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    * 即可启动前端
 
-### `npm run eject`
+* 后端位于 `./backend`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+  * 构建：`npm install`
+  * 运行：`npm start` 或 `node ./index.js`
+  * 使用express.js实现的一个 **极端轻量化** 的 **Redis风格** 后端
+  * 后端无预编译版本（因为本身就只有单文件）
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 3. 功能说明
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 3.1 纯React静态页面（60分）
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+* 登录页面
+  * ![image-20240527140934331](./README/image-20240527140934331.png)
+* 登陆页面（缺少输入）
+  * ![image-20240527141004875](./README/image-20240527141004875.png)
+* 登陆页面（密码不够长）
+  * ![image-20240527141108692](./README/image-20240527141108692.png)
+* 注册页面
+  * ![image-20240527141145454](./README/image-20240527141145454.png)
+* 注册页面（缺少输入）
+  * ![image-20240527141157476](./README/image-20240527141157476.png)
+* 注册页面（邮箱格式不正确）
+  * ![image-20240527141244817](./README/image-20240527141244817.png)
+* 注册页面（密码缺少大写字符或小写字符）
+  * ![image-20240527141318383](./README/image-20240527141318383.png)
+* 主页面
+  * ![image-20240527142109210](./README/image-20240527142109210.png)
+* 其他页面
+  * ![image-20240527142151627](./README/image-20240527142151627.png)
 
-## Learn More
+* 用户管理界面
+  * ![image-20240527142134478](./README/image-20240527142134478.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 3.2 后台用户管理（10分）
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* 修改用户（修改lovekdl用户的邮箱，修改前）
+  * ![image-20240527142335099](./README/image-20240527142335099.png)
+  * ![image-20240527142214659](./README/image-20240527142214659.png)
+* 修改用户（修改lovekdl用户的邮箱，修改后）
+  * ![image-20240527142411687](./README/image-20240527142411687.png)
+* 添加用户（添加FJQ同学）
+  * ![image-20240527142452208](./README/image-20240527142452208.png)
+* 添加用户（结果）
+  * ![image-20240527142506317](./README/image-20240527142506317.png)
+* 删除用户（删除FJQ同学）
+  * ![image-20240527142848461](./README/image-20240527142848461.png)
+* 删除用户（结果）
+  * ![image-20240527142901827](./README/image-20240527142901827.png)
+* 重启浏览器，发现数据仍保留
+  * ![image-20240527142537432](./README/image-20240527142537432.png)
 
-### Code Splitting
+### 6.3 数据持久化（10分）
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+* 经检查，数据已经同步到后端数据库中
+  * 删除前
+    * ![image-20240527142621386](./README/image-20240527142621386.png)
+  * 删除后
+    * ![image-20240527142941760](./README/image-20240527142941760.png)
 
-### Analyzing the Bundle Size
+### 6.4 后端联动（20分）
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* 后端日志
+  * ![image-20240527142919495](./README/image-20240527142919495.png)
+* 后端核心代码
+  * ![image-20240527143012348](./README/image-20240527143012348.png)
+* 前端交互部分代码：
+  * ![image-20240527143436245](./README/image-20240527143436245.png)
+* 前端异步代码：检查用户是否登录，路由跳转
+  * ![image-20240527143217099](./README/image-20240527143217099.png)
+* 前端异步代码：Header的登陆状态
+  * ![image-20240527143246706](./README/image-20240527143246706.png)

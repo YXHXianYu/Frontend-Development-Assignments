@@ -63,12 +63,8 @@ const LoginPage = () => {
             </Form.Item>
             <Form.Item style={{...styleMargin, ...styleCentered}}>
                 <Space>
-                    <Button type="primary" htmlType="submit">
-                        Login
-                    </Button>
-                    <Button onClick={() => { navigate("/register") }} >
-                        Register
-                    </Button>
+                    <Button type="primary" htmlType="submit"> Login </Button>
+                    <Button onClick={() => { navigate("/register") }}> Register </Button>
                 </Space>
             </Form.Item>
             <Alert style={{...styleMargin, marginTop: '40px'}} message="Tips: default user is admin/123456Aa" type="info" />

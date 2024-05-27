@@ -31,7 +31,7 @@ const getTime = () => {
 }
 
 app.post('/set', (req, res) => {
-    console.log(getTime(), chalk.red('set'), req.body)
+    console.log(getTime(), chalk.red('set'), req.body.key)
     const { key, value } = req.body
     if (!key || value === undefined) {
         return res.status(400).json({ error: 'Key and value are required' })
@@ -50,7 +50,7 @@ app.get('/get/:key', (req, res) => {
     if (!(key in data)) {
         return res.status(404).json({ error: 'Key not found' })
     }
-    console.log(chalk.red('get result:'), data[key])
+    // console.log(chalk.red('get result:'), data[key])
     res.json({ key, value: data[key] })
 })
 

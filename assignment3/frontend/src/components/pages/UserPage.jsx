@@ -16,7 +16,7 @@ const UserPage = () => {
     // initialization
     useEffect(() => {
         setUsers(userService.getUsers())
-    }, [])
+    }, [ userService ])
 
     // === Button ===
     const onEditClick = useCallback((record) => {
@@ -33,9 +33,9 @@ const UserPage = () => {
                 setUsers(userService.getUsers())
             },
         })
-    }, [])
+    }, [ modal, userService ])
 
-    const onAddBtnClick =    useCallback(() => {
+    const onAddBtnClick = useCallback(() => {
         setEntity({id: -1})
         setIsModalOpen(true)
     }, [])
@@ -50,7 +50,7 @@ const UserPage = () => {
             userService.editUser(user)
         }
         setUsers(userService.getUsers())
-    }, [])
+    }, [ entity, userService ])
 
     const onModalCancel = useCallback(() => {
         setIsModalOpen(false)

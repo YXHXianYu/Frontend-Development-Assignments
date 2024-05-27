@@ -10,6 +10,21 @@ const SideMenu = () => {
     }, {
         key: "User List",
         label: <Link to="/main/user">User List</Link>,
+    }, {
+        key: "Role List",
+        label: <Link to="/main/role">Role List</Link>,
+    }, {
+        key: "Goods List",
+        label: <Link to="/main/goods">Goods List</Link>,
+    }, {
+        key: "Order List",
+        label: <Link to="/main/order">Order List</Link>,
+    }, {
+        key: "Games",
+        label: <Link to="/main/games">Games</Link>,
+    }, {
+        key: "Authorization",
+        label: <Link to="/main/authorization">Authorization</Link>,
     }]
 
     const menuProps = {

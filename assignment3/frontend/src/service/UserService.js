@@ -1,24 +1,33 @@
 import axios from "axios"
 
+const encode = (password) => {
+    let result = 0
+    for (let i = 0; i < password.length; i++) {
+        result = result * 31 + password.charCodeAt(i)
+    }
+    result %= 1000000007
+    return result.toString()
+}
+
 const defaultUserList = [
     {
         id: 1,
         username: "admin",
-        password: "123456Aa",
+        password: encode("123456Aa"),
         name: "Administrator",
         email: "admin@example.com",
     },
     {
         id: 2,
         username: "yxhxianyu",
-        password: "123456Aa",
+        password: encode("123456Aa"),
         name: "YXH_XianYu",
         email: "yxhxianyu@gmail.com",
     },
     {
         id: 3,
         username: "lovekdl",
-        password: "123456Aa",
+        password: encode("123456Aa"),
         name: "lovekdl",
         email: "orz@lovekdl.gg",
     },
@@ -33,6 +42,7 @@ class UserService {
     }
 
     login(username, password, remember) {
+        password = encode(password)
         const user = this.userList.find((u) => u.username === username && u.password === password)
         if (user) {
             this.currentUserId = user.id
@@ -49,6 +59,7 @@ class UserService {
     }
 
     register(username, password, email) {
+        password = encode(password)
         if (this.userList.find((u) => u.username === username)) {
             return null
         }
@@ -58,7 +69,7 @@ class UserService {
             username,
             password,
             name: username,
-            email: email,
+            email,
         }
         if (!this.addUser(user)) return null
         return user
@@ -103,6 +114,7 @@ class UserService {
             this._setData()
         }
     }
+
 
     async _getData() {
         await axios.get('http://localhost:5000/get/userList')

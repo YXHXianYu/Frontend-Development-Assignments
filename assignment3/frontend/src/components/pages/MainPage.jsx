@@ -64,7 +64,7 @@ const MainPage = () => {
                 </Content>
                 <Footer style={stylePlaceholder} />
                 <Footer style={styleFooter} >
-                    Management Information System ©{new Date().getFullYear()} Created by YXHXianYu
+                    Management Information System ©{new Date().getFullYear()} Created by YXHXianYu (Based on j3l11234's Template)
                 </Footer>
             </Layout>
         </Layout>
