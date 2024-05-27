@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 const HomePage = () => {
 
@@ -34,7 +34,7 @@ const HomePage = () => {
                 })}
             </pre>
         </div>
-    );
-};
+    )
+}
 
-export default HomePage;
+export default HomePage

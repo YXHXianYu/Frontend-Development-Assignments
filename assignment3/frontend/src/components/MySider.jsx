@@ -1,6 +1,6 @@
-import React from "react";
-import { Menu, Layout } from "antd";
-import { Link } from "react-router-dom";
+import React from "react"
+import { Menu, Layout } from "antd"
+import { Link } from "react-router-dom"
 
 const SideMenu = () => {
     
@@ -35,4 +35,4 @@ const SideMenu = () => {
     )
 }
 
-export default SideMenu;
+export default SideMenu

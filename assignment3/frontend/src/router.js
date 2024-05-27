@@ -1,10 +1,10 @@
-import { createBrowserRouter } from "react-router-dom";
-import App from "./App";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import MainPage from "./pages/MainPage";
-import HomePage from "./pages/HomePage";
-import UserPage from "./pages/UserPage";
+import { createBrowserRouter } from "react-router-dom"
+import App from "./App"
+import LoginPage from "./components/pages/LoginPage"
+import RegisterPage from "./components/pages/RegisterPage"
+import MainPage from "./components/pages/MainPage"
+import HomePage from "./components/pages/HomePage"
+import UserPage from "./components/pages/UserPage"
 
 const router = createBrowserRouter([ {
         path: "/",
@@ -38,6 +38,6 @@ const router = createBrowserRouter([ {
             },
         ],
     },
-]);
+])
 
-export default router;
+export default router

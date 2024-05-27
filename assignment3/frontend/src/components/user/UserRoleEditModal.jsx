@@ -1,31 +1,31 @@
-import React, { forwardRef, useContext, useImperativeHandle } from 'react';
+import React, { forwardRef, useContext, useImperativeHandle } from 'react'
 
-import { Form, Checkbox, Modal } from 'antd';
+import { Form, Checkbox, Modal } from 'antd'
 
-import { ServiceContext } from '../../contexts/ServiceContext';
-import { useEffect } from 'react';
+import { ServiceContext } from '../../contexts/ServiceContext'
+import { useEffect } from 'react'
 
 const UserRoleEditForm = forwardRef(({ initialValues }, ref) => {
-    const { role: roleService } = useContext(ServiceContext);
-    const [form] = Form.useForm();
+    const { role: roleService } = useContext(ServiceContext)
+    const [form] = Form.useForm()
 
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
-    useImperativeHandle(ref, () => form, []);
+    useImperativeHandle(ref, () => form, [])
 
-    const roleOptions = roleService.getRoles().map(role => ({ label: role.name, value: role.id }));
+    const roleOptions = roleService.getRoles().map(role => ({ label: role.name, value: role.id }))
     
     // 管理员特殊逻辑
     useEffect(() => {
         if (form.getFieldValue('id') === 1) {
             roleOptions.forEach(option => {
                 if (option.value === 1) {
-                    option.checked = true;
+                    option.checked = true
                 }
-                option.disabled = true;
-            });
-            form.setFieldsValue({role: roleOptions.map(option => option.value)});
+                option.disabled = true
+            })
+            form.setFieldsValue({role: roleOptions.map(option => option.value)})
         }
-    }, [ /* eslint-disable-line react-hooks/exhaustive-deps */]);
+    }, [ /* eslint-disable-line react-hooks/exhaustive-deps */])
 
     return (
         <Form 
@@ -36,11 +36,11 @@ const UserRoleEditForm = forwardRef(({ initialValues }, ref) => {
                 <Checkbox.Group options={roleOptions}/>
             </Form.Item>
         </Form>
-    );
-});
+    )
+})
 
 const UserRoleEditFormModal = ({ open, onCreate, onCancel, initialValues }) => {
-    const formRef = React.createRef();
+    const formRef = React.createRef()
 
     return (
         <Modal
@@ -55,18 +55,18 @@ const UserRoleEditFormModal = ({ open, onCreate, onCancel, initialValues }) => {
             destroyOnClose
             onOk={async () => {
                 try {
-                    const formInstance = formRef.current;
-                    const values = await formInstance?.validateFields();
-                    formInstance?.resetFields();
+                    const formInstance = formRef.current
+                    const values = await formInstance?.validateFields()
+                    formInstance?.resetFields()
 
                     // 管理员特殊逻辑
                     if (values.id === 1) {
-                        values.menu = [1];
+                        values.menu = [1]
                     }
 
-                    onCreate(values);
+                    onCreate(values)
                 } catch (error) {
-                    console.log('Failed:', error);
+                    console.log('Failed:', error)
                 }
             }}
         >
@@ -75,7 +75,7 @@ const UserRoleEditFormModal = ({ open, onCreate, onCancel, initialValues }) => {
                 initialValues={initialValues}
             />
         </Modal>
-    );
-};
+    )
+}
 
-export default UserRoleEditFormModal;
+export default UserRoleEditFormModal

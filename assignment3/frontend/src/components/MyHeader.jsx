@@ -1,27 +1,27 @@
-import React, { useContext, useCallback } from "react";
-import { App, Button, Layout } from "antd";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useCallback } from "react"
+import { App, Button, Layout } from "antd"
+import { useNavigate } from "react-router-dom"
 
-import { ServiceContext } from "../contexts/ServiceContext";
+import { ServiceContext } from "../contexts/ServiceContext"
 
 const MyHeader = () => {
-    const { user: userService } = useContext(ServiceContext);
-    const { message } = App.useApp();
-    const navigate = useNavigate();
+    const { user: userService } = useContext(ServiceContext)
+    const { message } = App.useApp()
+    const navigate = useNavigate()
 
     const onLogout = useCallback(
         () => {
-            userService.logout();
+            userService.logout()
             message.open({
                 type: "info",
                 content: "Logout successfully",
-            });
+            })
             setTimeout(() => {
-                navigate("/login");
-            }, 100);
+                navigate("/login")
+            }, 100)
         },
         [ userService, message, navigate ]
-    );
+    )
 
     const { username } = userService.getCurrentUser() || { username: 'Not Logged In' }
 
@@ -52,14 +52,14 @@ const MyHeader = () => {
         <Layout.Header style={{...styleHeader}}>
             <div style={{...styleOuter}}>
                 <div style={{...styleInner}}>
-                    Login Status: &nbsp;{'<' + username + '>'}
+                    Login Status: &nbsp{'<' + username + '>'}
                 </div>
                 <Button onClick={onLogout}>
                     Logout
                 </Button>
             </div>
         </Layout.Header>
-    );
+    )
 }
 
-export default MyHeader;
+export default MyHeader

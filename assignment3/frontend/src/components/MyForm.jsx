@@ -6,7 +6,7 @@ const MyForm = ({ children, onFinish }) => {
 
     const {
         token: { colorBgContainer },
-    } = theme.useToken();
+    } = theme.useToken()
 
     const formProps = {
         name: "basic",

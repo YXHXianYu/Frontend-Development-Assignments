@@ -1,36 +1,36 @@
-import React, { useContext } from "react";
-import { App, Button, Form, Input, Space } from "antd";
-import { useNavigate } from "react-router-dom";
-import { ServiceContext } from "../contexts/ServiceContext";
-import MyForm from "../components/MyForm";
-import { styleCentered, styleMargin } from "../styles/styles";
+import React, { useContext } from "react"
+import { App, Button, Form, Input, Space } from "antd"
+import { useNavigate } from "react-router-dom"
+import { ServiceContext } from "../../contexts/ServiceContext"
+import MyForm from "../MyForm"
+import { styleCentered, styleMargin } from "../../styles/styles"
 
 const RegisterPage = () => {
-    const { message } = App.useApp();
-    const { user: userService } = useContext(ServiceContext);
-    const navigate = useNavigate();
+    const { message } = App.useApp()
+    const { user: userService } = useContext(ServiceContext)
+    const navigate = useNavigate()
 
     const onFinish = (values) => {
         const user = userService.register(
             values.username,
             values.password,
             values.email
-        );
+        )
         if (user) {
             message.open({
                 type: "success",
-                content: "Register successfully",
-            });
+                content: "Register successfully.",
+            })
             setTimeout(() => {
-                navigate("/login");
-            }, 100);
+                navigate("/login")
+            }, 100)
         } else {
             message.open({
                 type: "error",
-                content: "Register failed",
-            });
+                content: "Register failed.  Maybe the Backend is not available.",
+            })
         }
-    };
+    }
 
     const rulesUsername = [{
         required: true,

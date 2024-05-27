@@ -1,36 +1,36 @@
-import React, { useContext } from "react";
-import { Alert, App, Button, Checkbox, Form, Input, Space } from "antd";
-import { useNavigate } from "react-router-dom";
-import { ServiceContext } from "../contexts/ServiceContext";
-import MyForm from "../components/MyForm";
-import { styleCentered, styleMargin } from "../styles/styles";
+import React, { useContext } from "react"
+import { Alert, App, Button, Checkbox, Form, Input, Space } from "antd"
+import { useNavigate } from "react-router-dom"
+import { ServiceContext } from "../../contexts/ServiceContext"
+import MyForm from "../MyForm"
+import { styleCentered, styleMargin } from "../../styles/styles"
 
 const LoginPage = () => {
-    const { message } = App.useApp();
-    const { user: userService } = useContext(ServiceContext);
-    const navigate = useNavigate();
+    const { message } = App.useApp()
+    const { user: userService } = useContext(ServiceContext)
+    const navigate = useNavigate()
 
     const onFinish = (values) => {
         const user = userService.login(
             values.username,
             values.password,
             values.remember
-        );
+        )
         if (user) {
             message.open({
                 type: "success",
                 content: "Login successfully",
-            });
+            })
             setTimeout(() => {
-                navigate("/main");
-            }, 100);
+                navigate("/main")
+            }, 100)
         } else {
             message.open({
                 type: "error",
-                content: "Login failed",
-            });
+                content: "Login failed. Maybe the Backend is not available.",
+            })
         }
-    };
+    }
 
     const rulesUsername = [{
         required: true,

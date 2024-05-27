@@ -1,8 +1,8 @@
 import React, { useEffect, useContext } from "react"
 import { App, Layout } from "antd"
 import { Outlet, useNavigate } from "react-router-dom"
-import MySider from "../components/MySider"
-import { ServiceContext } from '../contexts/ServiceContext'
+import MySider from "../MySider"
+import { ServiceContext } from '../../contexts/ServiceContext'
 
 const { Content, Footer } = Layout
 

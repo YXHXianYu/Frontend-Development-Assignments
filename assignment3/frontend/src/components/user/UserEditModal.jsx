@@ -1,13 +1,13 @@
-import React, { useImperativeHandle } from 'react';
+import React, { useImperativeHandle } from 'react'
 
-import { Form, Input, Modal, Switch } from 'antd';
-import { forwardRef } from 'react';
+import { Form, Input, Modal, Switch } from 'antd'
+import { forwardRef } from 'react'
 
 const UserEditForm = forwardRef(({ initialValues }, ref) => {
-    const [form] = Form.useForm();
+    const [form] = Form.useForm()
 
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
-    useImperativeHandle(ref, () => form, []);
+    useImperativeHandle(ref, () => form, [])
 
     return (
         <Form 
@@ -62,11 +62,11 @@ const UserEditForm = forwardRef(({ initialValues }, ref) => {
                 <Switch disabled={initialValues.id === 1} />
             </Form.Item>
         </Form>
-    );
-});
+    )
+})
 
 const UserEditFormModal = ({ open, onCreate, onCancel, initialValues }) => {
-    const formRef = React.createRef();
+    const formRef = React.createRef()
 
     return (
         <Modal
@@ -81,12 +81,12 @@ const UserEditFormModal = ({ open, onCreate, onCancel, initialValues }) => {
             destroyOnClose
             onOk={async () => {
                 try {
-                    const formInstance = formRef.current;
-                    const values = await formInstance?.validateFields();
-                    formInstance?.resetFields();
-                    onCreate(values);
+                    const formInstance = formRef.current
+                    const values = await formInstance?.validateFields()
+                    formInstance?.resetFields()
+                    onCreate(values)
                 } catch (error) {
-                    console.log('Failed:', error);
+                    console.log('Failed:', error)
                 }
             }}
         >
@@ -95,7 +95,7 @@ const UserEditFormModal = ({ open, onCreate, onCancel, initialValues }) => {
                 initialValues={initialValues}
             />
         </Modal>
-    );
-};
+    )
+}
 
-export default UserEditFormModal;
+export default UserEditFormModal

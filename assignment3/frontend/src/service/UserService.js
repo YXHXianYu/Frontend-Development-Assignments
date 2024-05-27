@@ -28,38 +28,38 @@ const defaultUserList = [
         role: [3],
         enable: true,
     },
-];
+]
 
 class UserService {
-    userList = [];
-    currentUserId = null; // 当前登录用户的id
+    userList = []
+    currentUserId = null // 当前登录用户的id
 
     constructor() {
-        this._getData();
+        this._getData()
         console.log('constructor, userList: ', this.userList)
     }
 
     login(username, password, remember) {
         // 比较用户名和密码，如果正确则返回用户信息，否则返回null
-        const user = this.userList.find((u) => u.username === username && u.password === password);
+        const user = this.userList.find((u) => u.username === username && u.password === password)
         if (user) {
-            this.currentUserId = user.id;
+            this.currentUserId = user.id
             if (remember) {
-                localStorage.setItem('currentUserId', user.id);
+                localStorage.setItem('currentUserId', user.id)
             }
         }
-        return !!user;
+        return !!user
     }
 
     logout() {
-        this.currentUserId = null;
-        localStorage.removeItem('currentUserId');
+        this.currentUserId = null
+        localStorage.removeItem('currentUserId')
     }
 
     register(username, password, email) {
         // 检查用户名是否已经存在，如果不存在则创建用户并返回用户信息，否则返回null
         if (this.userList.find((u) => u.username === username)) {
-            return null;
+            return null
         }
 
         const user = {
@@ -70,47 +70,47 @@ class UserService {
             email: email,
             role: [],
             enable: true,
-        };
-        this.addUser(user);
-        return user;
+        }
+        if (!this.addUser(user)) return null
+        return user
     }
 
     getCurrentUser() {
         if (!this.currentUserId) {
-            this.currentUserId = localStorage.getItem('currentUserId');
+            this.currentUserId = localStorage.getItem('currentUserId')
         }
-        console.log('currentUserId: ', this.currentUserId);
+        console.log('currentUserId: ', this.currentUserId)
         console.log('userList: ', this.userList)
-        return this.userList.find((u) => u.id === parseInt(this.currentUserId));
+        return this.userList.find((u) => u.id === parseInt(this.currentUserId))
     }
 
     getUsers() {
-        return this.userList.concat();
+        return this.userList.concat()
     }
 
     addUser(user) {
-        user.id = this.userList.reduce((max, u) => (u.id > max ? u.id : max), 0) + 1;
-        this.userList.push(user);
-        this._setData();
+        user.id = this.userList.reduce((max, u) => (u.id > max ? u.id : max), 0) + 1
+        this.userList.push(user)
+        this._setData()
     }
 
     editUser(user) {
-        const index = this.userList.findIndex((u) => u.id === user.id);
+        const index = this.userList.findIndex((u) => u.id === user.id)
         if (index !== -1) {
-            this.userList[index] = user;
-            this._setData();
+            this.userList[index] = user
+            this._setData()
         }
     }
 
     deleteUser(id) {
         if (id === 1) {
-            return;
+            return
         }
 
-        const index = this.userList.findIndex((user) => user.id === id);
+        const index = this.userList.findIndex((user) => user.id === id)
         if (index !== -1) {
-            this.userList.splice(index, 1);
-            this._setData();
+            this.userList.splice(index, 1)
+            this._setData()
         }
     }
 
@@ -118,16 +118,16 @@ class UserService {
         axios.get('http://localhost:5000/get/userList')
             .then(response => {
                 if (response.code === 200) {
-                    this.userList = response.data;
+                    this.userList = response.data
                 } else {
-                    this.userList = defaultUserList;
-                    this._setData();
+                    this.userList = defaultUserList
+                    this._setData()
                 }
+                return true
             })
             .catch(error => {
-                console.log('Error fetching data: ', error);
-                this.userList = defaultUserList;
-                this._setData();
+                console.log('Error fetching data: ', error)
+                return false
             })
     }
 
@@ -137,10 +137,14 @@ class UserService {
             'value': this.userList,
         }
         axios.post('http://localhost:5000/set', data)
+            .then(_ => {
+                return true
+            })
             .catch(error => {
                 console.log('Error saving data: ', error)
+                return false
             })
     }
 }
 
-export default UserService;
+export default UserService
