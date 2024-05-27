@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from "react"
+import React, { useContext, useState, useEffect, useCallback } from "react"
 import { App, Button, Layout } from "antd"
 import { useNavigate } from "react-router-dom"
 
@@ -9,21 +9,26 @@ const MyHeader = () => {
     const { message } = App.useApp()
     const navigate = useNavigate()
 
-    const onLogout = useCallback(
-        () => {
-            userService.logout()
-            message.open({
-                type: "info",
-                content: "Logout successfully",
-            })
-            setTimeout(() => {
-                navigate("/login")
-            }, 100)
-        },
-        [ userService, message, navigate ]
-    )
+    const onLogout = useCallback(() => {
+        userService.logout()
+        message.open({
+            type: "info",
+            content: "Logout successfully",
+        })
+        setTimeout(() => {
+            navigate("/login")
+        }, 100)
+    }, [ userService, message, navigate ])
 
-    const { username } = userService.getCurrentUser() || { username: 'Not Logged In' }
+    const [ username, setUsername ] = useState('Not Logged In')
+    useEffect(() => {
+        const func = async () => {
+            const user = await userService.getCurrentUser()
+            if (user) setUsername(user.username)
+            else setUsername('Not Logged In')
+        }
+        func()
+    })
 
     const styleHeader = {
         display: 'flex',
@@ -52,7 +57,7 @@ const MyHeader = () => {
         <Layout.Header style={{...styleHeader}}>
             <div style={{...styleOuter}}>
                 <div style={{...styleInner}}>
-                    Login Status: &nbsp{'<' + username + '>'}
+                    Login Status: &nbsp; {'<' + username + '>'}
                 </div>
                 <Button onClick={onLogout}>
                     Logout

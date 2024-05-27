@@ -4,29 +4,23 @@ const defaultUserList = [
     {
         id: 1,
         username: "admin",
-        password: "123456",
+        password: "123456Aa",
         name: "Administrator",
         email: "admin@example.com",
-        role: [1],
-        enable: true,
     },
     {
         id: 2,
-        username: "goods",
-        password: "123456",
-        name: "Goods Manager",
-        email: "goods@example.com",
-        role: [2],
-        enable: true,
+        username: "yxhxianyu",
+        password: "123456Aa",
+        name: "YXH_XianYu",
+        email: "yxhxianyu@gmail.com",
     },
     {
         id: 3,
-        username: "order",
-        password: "123456",
-        name: "Order Manager",
-        email: "order@example.com",
-        role: [3],
-        enable: true,
+        username: "lovekdl",
+        password: "123456Aa",
+        name: "lovekdl",
+        email: "orz@lovekdl.gg",
     },
 ]
 
@@ -36,11 +30,9 @@ class UserService {
 
     constructor() {
         this._getData()
-        console.log('constructor, userList: ', this.userList)
     }
 
     login(username, password, remember) {
-        // 比较用户名和密码，如果正确则返回用户信息，否则返回null
         const user = this.userList.find((u) => u.username === username && u.password === password)
         if (user) {
             this.currentUserId = user.id
@@ -57,7 +49,6 @@ class UserService {
     }
 
     register(username, password, email) {
-        // 检查用户名是否已经存在，如果不存在则创建用户并返回用户信息，否则返回null
         if (this.userList.find((u) => u.username === username)) {
             return null
         }
@@ -68,19 +59,18 @@ class UserService {
             password,
             name: username,
             email: email,
-            role: [],
-            enable: true,
         }
         if (!this.addUser(user)) return null
         return user
     }
 
-    getCurrentUser() {
+    async getCurrentUser() {
+        await this._getData()
         if (!this.currentUserId) {
             this.currentUserId = localStorage.getItem('currentUserId')
         }
-        console.log('currentUserId: ', this.currentUserId)
-        console.log('userList: ', this.userList)
+        // console.log('currentUserId: ', this.currentUserId)
+        // console.log('userList: ', this.userList)
         return this.userList.find((u) => u.id === parseInt(this.currentUserId))
     }
 
@@ -114,35 +104,31 @@ class UserService {
         }
     }
 
-    _getData() {
-        axios.get('http://localhost:5000/get/userList')
+    async _getData() {
+        await axios.get('http://localhost:5000/get/userList')
             .then(response => {
-                if (response.code === 200) {
-                    this.userList = response.data
+                if (response.status === 200) {
+                    this.userList = response.data.value
                 } else {
                     this.userList = defaultUserList
                     this._setData()
                 }
-                return true
             })
             .catch(error => {
                 console.log('Error fetching data: ', error)
-                return false
+                this.userList = defaultUserList
+                this._setData()
             })
     }
 
-    _setData() {
+    async _setData() {
         const data = {
             'key': 'userList',
             'value': this.userList,
         }
-        axios.post('http://localhost:5000/set', data)
-            .then(_ => {
-                return true
-            })
+        await axios.post('http://localhost:5000/set', data)
             .catch(error => {
                 console.log('Error saving data: ', error)
-                return false
             })
     }
 }

@@ -12,18 +12,19 @@ const MainPage = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        const user = userService.getCurrentUser()
-        if (!user) {
-            message.open(
-                {
+        const func = async () => {
+            const user = await userService.getCurrentUser()
+            if (!user) {
+                message.open({
                     type: "warning",
                     content: "Please login first",
-                }
-            )
-            navigate("/login")
-        } else {
-            navigate("/main/home")
+                })
+                navigate("/login")
+            } else {
+                navigate("/main/home")
+            }
         }
+        func()
     }, [/* eslint-disable-line react-hooks/exhaustive-deps */])
 
     const styleLayout = {

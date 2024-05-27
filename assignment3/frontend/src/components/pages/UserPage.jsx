@@ -3,26 +3,25 @@ import { useEffect, useState, useCallback, useContext } from "react"
 import { Button, Space, Table, App } from "antd"
 
 import { ServiceContext } from "../../contexts/ServiceContext"
-import UserEditModal from "../user/UserEditModal"
-import UserRoleEditModal from "../user/UserRoleEditModal"
+import UserEditModal from "../UserEditModal"
 
 const UserPage = () => {
     const { modal } = App.useApp()
     const { user: userService } = useContext(ServiceContext)
 
     const [ users, setUsers ] = useState([])
+    const [ entity, setEntity ] = useState({})
+    const [ isModalOpen, setIsModalOpen ] = useState(false)
+
+    // initialization
     useEffect(() => {
         setUsers(userService.getUsers())
-    }, [/* eslint-disable-line react-hooks/exhaustive-deps */])
-    
-    const onRoleClick = useCallback((record) => {
-        setEditEntity(record)
-        setRoleEditModalOpen(true)
     }, [])
 
+    // === Button ===
     const onEditClick = useCallback((record) => {
-        setEditEntity(record)
-        setEditModalOpen(true)
+        setEntity(record)
+        setIsModalOpen(true)
     }, [])
 
     const onDeleteClick = useCallback((record) => {
@@ -30,50 +29,49 @@ const UserPage = () => {
             title: 'Are you sure to delete this user?',
             content: 'This action cannot be undone.',
             onOk() {
-                userService.deleteMenu(record.id)
+                userService.deleteUser(record.id)
                 setUsers(userService.getUsers())
             },
         })
-    }, [/* eslint-disable-line react-hooks/exhaustive-deps */])
-
-    const [editEntity, setEditEntity] = useState({})
-    const [editModalOpen, setEditModalOpen] = useState(false)
-    const [editRoleModalOpen, setRoleEditModalOpen] = useState(false)
-    const onAddBtnClick =    useCallback(() => {
-        setEditEntity({id: -1})
-        setEditModalOpen(true)
     }, [])
-    const onEditModalCreate = useCallback((values) => {
-        setEditModalOpen(false)
-        setRoleEditModalOpen(false)
-        const user = { ...editEntity, ...values }
+
+    const onAddBtnClick =    useCallback(() => {
+        setEntity({id: -1})
+        setIsModalOpen(true)
+    }, [])
+    
+    // === Modal ===
+    const onModalCreate = useCallback((values) => {
+        setIsModalOpen(false)
+        const user = { ...entity, ...values }
         if (values.id === -1) {
             userService.addUser(user)
         } else {
             userService.editUser(user)
         }
         setUsers(userService.getUsers())
-    }, [ editEntity, /* eslint-disable-line react-hooks/exhaustive-deps */])
-
-    const onEditModalCancel = useCallback(() => {
-        setEditModalOpen(false)
-        setRoleEditModalOpen(false)
     }, [])
 
+    const onModalCancel = useCallback(() => {
+        setIsModalOpen(false)
+    }, [])
+
+    const modalProps = {
+        open: isModalOpen,
+        onCreate: onModalCreate,
+        onCancel: onModalCancel,
+        initialValues: entity,
+    }
+
+    // === Table ===
     const columns = [
         { title: "ID", dataIndex: "id", key: "id" },
         { title: "Username", dataIndex: "username", key: "username" },
         { title: "Name", dataIndex: "name", key: "name" },
         { title: "Email", dataIndex: "email", key: "email" },
-        { title: "Enable", dataIndex: "enable", key: "enable",
-            render: (enable) => enable ? "True" : "False"
-        },
-        {
-            title: "Action",
-            key: "action",
+        { title: "Action", key: "action",
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="link" onClick={() => {onRoleClick(record)}}>Set Role</Button>
                     <Button type="link" onClick={() => {onEditClick(record)}}>Edit</Button>
                     {record.id !== 1 && <Button type="link" onClick={() => {onDeleteClick(record)}}>Delete</Button>}
                 </Space>
@@ -83,18 +81,7 @@ const UserPage = () => {
     
     return (
         <div className="page">
-            <UserEditModal
-                open={editModalOpen}
-                onCreate={onEditModalCreate}
-                onCancel={onEditModalCancel}
-                initialValues={editEntity}
-            />
-            <UserRoleEditModal
-                open={editRoleModalOpen}
-                onCreate={onEditModalCreate}
-                Delete={onEditModalCancel}
-                initialValues={editEntity} 
-            />
+            <UserEditModal {...modalProps} />
             <Button type="primary" onClick={onAddBtnClick}>Add User</Button>
             <Table rowKey="id" columns={columns} dataSource={users} />
         </div>

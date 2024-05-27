@@ -46,7 +46,6 @@ app.get('/get/:key', (req, res) => {
     console.log(getTime(), chalk.red('get'), req.params)
     const { key } = req.params
     const data = readData()
-    console.log(data)
     console.log(key in data)
     if (!(key in data)) {
         return res.status(404).json({ error: 'Key not found' })
