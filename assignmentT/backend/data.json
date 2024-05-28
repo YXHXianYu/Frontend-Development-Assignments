@@ -1,0 +1,76 @@
+{
+  "user": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "3008453",
+      "email": "admin@example.com"
+    },
+    {
+      "id": 2,
+      "username": "YXH_XianYu",
+      "password": "3008453",
+      "email": "yxhxianyu@gmail.com"
+    },
+    {
+      "id": 3,
+      "username": "lovekdl",
+      "password": "3008453",
+      "email": "lovekdl_orz_orz_thu_ye@thu.edu.cn"
+    },
+    {
+      "id": 653430,
+      "username": "new_user3430",
+      "email": "new_user@example.com",
+      "password": "password"
+    },
+    {
+      "id": 829144,
+      "username": "new_user9144",
+      "email": "new_user@example.com",
+      "password": "password"
+    },
+    {
+      "id": 106249,
+      "username": "new_user6249",
+      "email": "new_user@emple.co",
+      "password": "password"
+    },
+    {
+      "id": 451529,
+      "username": "new_user1530",
+      "email": "new_user@eple.com",
+      "password": "password"
+    },
+    {
+      "id": 154424,
+      "username": "new_user4424",
+      "email": "new_user@example.com",
+      "password": "password"
+    },
+    {
+      "id": 192546,
+      "username": "new_user2546",
+      "email": "new_user@example.com",
+      "password": "password"
+    },
+    {
+      "id": 61539,
+      "username": "new_user1539",
+      "email": "new_user@example.com",
+      "password": "password"
+    },
+    {
+      "id": 193983,
+      "username": "new_user3983",
+      "email": "new_user@example.com",
+      "password": "password"
+    },
+    {
+      "id": 390448,
+      "username": "new_user448",
+      "email": "new_user@example.com",
+      "password": "password"
+    }
+  ]
+}
