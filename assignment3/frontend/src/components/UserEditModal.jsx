@@ -1,13 +1,13 @@
 import React, { useImperativeHandle } from 'react'
 
-import { Form, Input, Modal, Switch } from 'antd'
+import { Form, Input, Modal } from 'antd'
 import { forwardRef } from 'react'
 import { usernameRules, passwordRules, nameRules, emailRules } from "../tools/rules"
 
 const UserEditForm = forwardRef(({ initialValues }, ref) => {
     const [ form ] = Form.useForm()
 
-    useImperativeHandle(ref, () => form, [])
+    useImperativeHandle(ref, () => form, [ form ])
 
     const fromProps = {
         layout: "horizontal",
@@ -26,8 +26,8 @@ const UserEditForm = forwardRef(({ initialValues }, ref) => {
             <Form.Item name="username" label="Username" rules={usernameRules} >
                 <Input />
             </Form.Item>
-            <Form.Item name="password" label="Password" rules={passwordRules} >
-                <Input.Password />
+            <Form.Item name="password" label="Password" >
+                <Input.Password disabled />
             </Form.Item>
             <Form.Item name="name" label="Name" rules={nameRules} >
                 <Input />
@@ -44,6 +44,7 @@ const UserEditFormModal = ({ open, onCreate, onCancel, initialValues }) => {
 
     const modalProps = {
         open: open,
+        closable: false,
         title: "Edit User",
         okText: "Confirm",
         cancelText: "Cancel",
